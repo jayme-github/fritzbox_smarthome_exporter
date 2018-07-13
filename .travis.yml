@@ -1,0 +1,38 @@
+language: go
+sudo: false
+matrix:
+  include:
+  - go: 1.10.x
+    env: LATEST=true
+  - go: 1.9
+  - go: tip
+  allow_failures:
+  - go: tip
+
+before_install:
+ - go get github.com/mitchellh/gox
+ - curl -L -s https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 -o $GOPATH/bin/dep
+ - chmod +x $GOPATH/bin/dep
+
+install:
+ - dep ensure -vendor-only
+
+script:
+ - go vet $(go list ./... | grep -v /vendor/)
+ - go test -v -race ./...
+ - if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="fritzbox_smarthome_exporter.." -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: D6zUa6GJWwyykS40t7CKitf8vuXqeGWQBpdE8cimcWmsWu158PIcEG6QNBIDBdZw8t2nxy6n9xqxKnYUYU4rw5UPu9hHCrTCEycMj07uVHvIOt74QU8js9cKjz2aD/Cm4huQDsgSIgy2mguC1qeKjjjGl4m0OKLfMWpB7F9m+1ysTKeghtRj40fzNPzVWeKOpCVBYlX/IvHBV+ObXy25dCOofoCD5QvQafRqQ6g0uRg5bqvDe9ZTly8JmbZhkc0eovxPMQQ7e8Q68nStz/ph+ME/iZEppCBc5JpDMHAlAPS4uO57ZOLsmqIZ8rBUNx+5nKy47z/ERueCezp8bwT2Bdz+SguP1IJSHNTMDilGzIC4VfKxaQE5GMwvkJG21mCG24ny2f5ZWDoXbRR7OdSN1B6wamNOfsMT/CYDfxtnoatkqhwepYtN8RWiBaMawwX/GhJib4xUM/n3lJC13K+c2q5moVdaryN270VdON4XdC+7mgZ9bklVzNFNYVAtAGlZi02AHa/BoTM73X0gtiK8JdgIXEZKLN6h3q0ufLbjRc6NAnyLiXi9B5UeTrKpx4g9lhbS9eKTvLim1gUVd2dyy3uw3mFBLXCjYhqeWzm4+8lwRwInV3iph9/raaYQ/bC7abxYO7zOo3cIeFx3NCltRLCQXpn4RQxJfYN09cYRlV8=
+  file:
+    - fritzbox_smarthome_exporter.windows.amd64.exe
+    - fritzbox_smarthome_exporter.darwin.amd64
+    - fritzbox_smarthome_exporter.linux.amd64
+  on:
+    repo: jayme-github/fritzbox_smarthome_exporter
+    tags: true
+    condition: $LATEST = true
+
