@@ -1,0 +1,58 @@
+# FRITZ!Box Smarthome exporter for prometheus
+Export information about your smarthome devices (switches, powermeters, thermostat, ...) to prometheus.
+
+
+# Usage
+
+* Setup a (restricted) user account for the exporter to use. This accounts only need access to smarthome devices, see [Setting up users with restricted authorization](https://en.avm.de/service/fritzbox/fritzbox-5490/knowledge-base/publication/show/1522_Accessing-FRITZ-Box-from-the-home-network-with-user-accounts/) for details.
+* [Download your FRITZ!Box certificate](https://en.avm.de/service/fritzbox/fritzbox-7390/knowledge-base/publication/show/1523_Downloading-your-FRITZ-Box-certificate-and-importing-it-to-your-computer/) (recommended)
+
+```
+Usage of ./fritzbox_smarthome_exporter:
+  -cert="": Path to the FRITZ!Box certificate.
+  -noverify=false: Omit TLS verification of the FRITZ!Box certificate.
+  -password="": FRITZ!Box password.
+  -url="https://fritz.box": FRITZ!Box URL.
+  -username="": FRITZ!Box username.
+```
+Command line arguments or environment variables (the argument as uppercase, like `CERT` for `-cert`) may be used.
+
+
+The exporter will bind to TCP Port 9103 and export the following metrics via `/metrics`:
+
+```
+# HELP fritzbox_device_info Device information
+# TYPE fritzbox_device_info gauge
+fritzbox_device_info{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200",functionbitmask="2944",fw_version="03.87",internal_id="16",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="12345 0000000",device_name="HKR 1",device_type="Comet DECT",functionbitmask="320",fw_version="03.68",internal_id="23",manufacturer="AVM"} 1
+# HELP fritzbox_device_present Device connected (1) or not (0)
+# TYPE fritzbox_device_present gauge
+fritzbox_device_present{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} 1
+fritzbox_device_present{device_id="12345 0000000",device_name="HKR 1",device_type="Comet DECT"} 1
+# HELP fritzbox_energy Absolute energy consumption since the device started operating
+# TYPE fritzbox_energy gauge
+fritzbox_energy{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} 103023
+# HELP fritzbox_power Current power, refreshed approx every 2 minutes
+# TYPE fritzbox_power gauge
+fritzbox_power{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} 0
+# HELP fritzbox_switch_boxlock Switching via FRITZ!Box disabled? 1/0, -1 if not known or error
+# TYPE fritzbox_switch_boxlock gauge
+fritzbox_switch_boxlock{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} 0
+# HELP fritzbox_switch_devicelock Switching via device disabled 1/0, -1 if not known or error
+# TYPE fritzbox_switch_devicelock gauge
+fritzbox_switch_devicelock{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} 1
+# HELP fritzbox_switch_mode Switch mode 1/0 (manual/automatic), -1 if not known or error
+# TYPE fritzbox_switch_mode gauge
+fritzbox_switch_mode{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} -1
+# HELP fritzbox_switch_state Switch state 1/0 (on/off), -1 if not known or error
+# TYPE fritzbox_switch_state gauge
+fritzbox_switch_state{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} -1
+# HELP fritzbox_temperature Temperature measured at the device sensor in units of 0.1 °C
+# TYPE fritzbox_temperature gauge
+fritzbox_temperature{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} 19
+fritzbox_temperature{device_id="12345 0000000",device_name="HKR 1",device_type="Comet DECT"} 22
+# HELP fritzbox_temperature_offset Temperature offset (set by the user) in units of 0.1 °C
+# TYPE fritzbox_temperature_offset gauge
+fritzbox_temperature_offset{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} -1
+fritzbox_temperature_offset{device_id="12345 0000000",device_name="HKR 1",device_type="Comet DECT"} -0.5
+```
