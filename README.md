@@ -1,6 +1,7 @@
 # FRITZ!Box Smarthome exporter for prometheus
 Export information about your smarthome devices (switches, powermeters, thermostat, ...) to prometheus.
 
+[![Build Status](https://travis-ci.org/jayme-github/fritzbox_smarthome_exporter.svg?branch=master)](https://travis-ci.org/jayme-github/fritzbox_smarthome_exporter)
 
 # Usage
 
