@@ -16,3 +16,4 @@
 *.swp
 vendor/*
 fritzbox_smarthome_exporter
+build/*

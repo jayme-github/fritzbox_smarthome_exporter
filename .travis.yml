@@ -1,9 +1,21 @@
 language: go
-sudo: false
+sudo: required
+
+env:
+  global:
+    - CGO_ENABLED=0
+    - secure: "vc8IfVWMLfWk6lfD/Eam3JIgkeEAyX9y2Wy8dKtHBq6vEw4+THk1O6esu71QVITk8FmsDVYaLqNp7e+8+05YwVZ9eWs6IPCw669QRt77mPN9N5ou45DAxQR5Ci4PO0mLMts7lM+RMYvlg+VgP/UJ7h0+TaKjXacK7FTXYQP8vA6f57IFIuSEK1ml2Kq3XA0Ij5iuUgdOybUGFA7v0ik3hqF79tRz9y0GADztnBAlu4aBSgD+C9kjjSrmIfdop8CCiXT24O9GCJXEW1KiTHh1Cmlaq2uauYR9xmVVAeJpJ5XiE3vWaoiw+FzhSIDEp26B1ZVuJSsNgoJoSPHVZhXLsrgUw64TpYb8Q0IQeJznyTbToTvR8Y1Kswrmt090BZs6qkEeVDMFkXXgd5gcqNBF9nBnN6g576J+pChJY+2o+pRCt/2nVfzPCC2VWQ75WqkCHdhoIWgKDmnikbu/9mOKv+GcBfyypSCxVuyWDP3XlNrKOxFt94SD10vXka01ZpiX9dXadzopuuWlghD84hGw4dyzGz9vgCrDCaYQfS2bQOIH0W1cXNGHO29LSl4OdXa2r9DBeswsa09cBxukjmp9r6mOO0Labl4769Le1/X7EgdDMOm4TBbFv2La9lqi0zF51L+dppHcifctpe1DwYw2M1bGioGN43gJ18Zw/h/M0wg="
+    - secure: "YbirQP3gTEd7Knd6MOqcv6d2Wr09Y0Xb5JEGmSnFAfNpa5ynV6BcejU+SnBNg14+aJUiF5ezD6yZoYvJbpb9tehbUoxl6MURkiIR6sbVuXJCXKiW6RPpT/tY6iWkdhmHWx+uedYURZ3qhMpbez8KFZR0n6ndnUKwAQlSbSmZLaXwfZeA3N9Lirj2n/o/X/Whb6VEhk44QiyfJuwrs29ZJeSeolMlky7uNjjGqygV6j69kROy/ZM8+6dENoXx4toPAGVOeEnHpuKWbX5nLA3LniDtaJrF/3Trc957hUjJZlI44lkOVN5zzZOrsSeC536or87ktIy/v5j69ZNRcb9SYxlMf4W+MM0MhxW4UiAahIVv6DgjQ91fhZ+Cq2UkwtBswpdWg0ZcoWFkG8NfikqQ4s69T6IasMVyCxgQoPa3UfC7k3ZtcQmc+f+pJ6s0Ept95aXnSeUksg+tS7hbK76nbRCXZ3k8HhuCGsKloVaRLy+A2mxaiOlGvbUrknXfUtC9dGvNnA0h4YwB10O21Ybku0lgBzBEMfV7Tc2vL3/QK8qFZAABDBZXwE/7A1I90bNlLTeTg1vZRHLDi5VozPygm0laZGmHPxF5JGSfd7PH5JqhDoev7jmL1ohS9Yr//LsQMCqSDhQF9B883NREzb0t93PTkUVE35Ei5YVfWmuvjcM="
+
+services:
+- docker
+
 matrix:
   include:
   - go: 1.10.x
-    env: LATEST=true
+    env:
+     - LATEST=true
+     - CGO_ENABLED=0
   - go: 1.9
   - go: tip
   allow_failures:
@@ -19,20 +31,24 @@ install:
 
 script:
  - go vet $(go list ./... | grep -v /vendor/)
- - go test -v -race ./...
- - if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64" -output="fritzbox_smarthome_exporter.." -ldflags "-X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
+ - go test -v ./...
+ - if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64 386" -output="build/fritzbox_smarthome_exporter.{{.OS}}.{{.Arch}}" -ldflags "-extldflags \"-static\" -X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
+ - if [ "${LATEST}" = "true" -a -n "${TRAVIS_TAG}" ]; then docker build -t "jaymedh/fritzbox_smarthome_exporter:${TRAVIS_TAG}" .; fi
 
 deploy:
-  provider: releases
-  skip_cleanup: true
-  api_key:
-    secure: D6zUa6GJWwyykS40t7CKitf8vuXqeGWQBpdE8cimcWmsWu158PIcEG6QNBIDBdZw8t2nxy6n9xqxKnYUYU4rw5UPu9hHCrTCEycMj07uVHvIOt74QU8js9cKjz2aD/Cm4huQDsgSIgy2mguC1qeKjjjGl4m0OKLfMWpB7F9m+1ysTKeghtRj40fzNPzVWeKOpCVBYlX/IvHBV+ObXy25dCOofoCD5QvQafRqQ6g0uRg5bqvDe9ZTly8JmbZhkc0eovxPMQQ7e8Q68nStz/ph+ME/iZEppCBc5JpDMHAlAPS4uO57ZOLsmqIZ8rBUNx+5nKy47z/ERueCezp8bwT2Bdz+SguP1IJSHNTMDilGzIC4VfKxaQE5GMwvkJG21mCG24ny2f5ZWDoXbRR7OdSN1B6wamNOfsMT/CYDfxtnoatkqhwepYtN8RWiBaMawwX/GhJib4xUM/n3lJC13K+c2q5moVdaryN270VdON4XdC+7mgZ9bklVzNFNYVAtAGlZi02AHa/BoTM73X0gtiK8JdgIXEZKLN6h3q0ufLbjRc6NAnyLiXi9B5UeTrKpx4g9lhbS9eKTvLim1gUVd2dyy3uw3mFBLXCjYhqeWzm4+8lwRwInV3iph9/raaYQ/bC7abxYO7zOo3cIeFx3NCltRLCQXpn4RQxJfYN09cYRlV8=
-  file:
-    - fritzbox_smarthome_exporter.windows.amd64.exe
-    - fritzbox_smarthome_exporter.darwin.amd64
-    - fritzbox_smarthome_exporter.linux.amd64
-  on:
-    repo: jayme-github/fritzbox_smarthome_exporter
-    tags: true
-    condition: $LATEST = true
-
+ - provider: releases
+   skip_cleanup: true
+   api_key:
+     secure: D6zUa6GJWwyykS40t7CKitf8vuXqeGWQBpdE8cimcWmsWu158PIcEG6QNBIDBdZw8t2nxy6n9xqxKnYUYU4rw5UPu9hHCrTCEycMj07uVHvIOt74QU8js9cKjz2aD/Cm4huQDsgSIgy2mguC1qeKjjjGl4m0OKLfMWpB7F9m+1ysTKeghtRj40fzNPzVWeKOpCVBYlX/IvHBV+ObXy25dCOofoCD5QvQafRqQ6g0uRg5bqvDe9ZTly8JmbZhkc0eovxPMQQ7e8Q68nStz/ph+ME/iZEppCBc5JpDMHAlAPS4uO57ZOLsmqIZ8rBUNx+5nKy47z/ERueCezp8bwT2Bdz+SguP1IJSHNTMDilGzIC4VfKxaQE5GMwvkJG21mCG24ny2f5ZWDoXbRR7OdSN1B6wamNOfsMT/CYDfxtnoatkqhwepYtN8RWiBaMawwX/GhJib4xUM/n3lJC13K+c2q5moVdaryN270VdON4XdC+7mgZ9bklVzNFNYVAtAGlZi02AHa/BoTM73X0gtiK8JdgIXEZKLN6h3q0ufLbjRc6NAnyLiXi9B5UeTrKpx4g9lhbS9eKTvLim1gUVd2dyy3uw3mFBLXCjYhqeWzm4+8lwRwInV3iph9/raaYQ/bC7abxYO7zOo3cIeFx3NCltRLCQXpn4RQxJfYN09cYRlV8=
+   file_glob: true
+   file: build/fritzbox_smarthome_exporter.*
+   on:
+     repo: jayme-github/fritzbox_smarthome_exporter
+     tags: true
+     condition: "$LATEST = true"
+ - provider: script
+   script: bash docker_push.sh
+   on:
+     repo: jayme-github/fritzbox_smarthome_exporter
+     tags: true
+     condition: "$LATEST = true"
