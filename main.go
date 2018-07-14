@@ -57,7 +57,7 @@ func main() {
 		options = append(options, fritz.SkipTLSVerify())
 	}
 
-	if len(*certificatePath) > 0 {
+	if !*noVerify && len(*certificatePath) > 0 {
 		crt, err := ioutil.ReadFile(*certificatePath)
 		if err == nil {
 			options = append(options, fritz.Certificate(crt))
