@@ -111,7 +111,7 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			ch <- prometheus.MustNewConstMetric(
 				fc.SwitchState,
 				prometheus.GaugeValue,
-				parseSwitchStrings(dev.Switch.Mode),
+				parseSwitchStrings(dev.Switch.State),
 				dev.Identifier,
 				dev.Productname,
 				dev.Name,
