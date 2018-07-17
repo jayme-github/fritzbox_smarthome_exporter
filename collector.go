@@ -174,13 +174,13 @@ func NewFritzCollector() *fritzCollector {
 		),
 		EnergyWhDesc: prometheus.NewDesc(
 			"fritzbox_energy",
-			"Absolute energy consumption since the device started operating",
+			"Absolute energy consumption (in  Wh) since the device started operating",
 			genericLabels,
 			prometheus.Labels{},
 		),
 		PowerWDesc: prometheus.NewDesc(
 			"fritzbox_power",
-			"Current power, refreshed approx every 2 minutes",
+			"Current power (in W), refreshed approx every 2 minutes",
 			genericLabels,
 			prometheus.Labels{},
 		),
