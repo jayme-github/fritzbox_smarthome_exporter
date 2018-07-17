@@ -70,3 +70,8 @@ docker run -d --name fritzbox_smarthome_exporter -p 9103:9103 \
   -e USERNAME=SmarthomeUser \
   jaymedh/fritzbox_smarthome_exporter:v0.0.1 -url="https://fritz.box:8443" -cert=/fritzbox.pem
 ```
+
+
+# Grafana
+
+Example Grafana dashboard can be found at https://grafana.com/dashboards/7019
