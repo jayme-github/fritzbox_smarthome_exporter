@@ -15,7 +15,6 @@ matrix:
   - go: 1.10.x
     env:
      - LATEST=true
-     - CGO_ENABLED=0
   - go: 1.9
   - go: tip
   allow_failures:
