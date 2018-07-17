@@ -57,3 +57,16 @@ fritzbox_temperature{device_id="12345 0000000",device_name="HKR 1",device_type="
 fritzbox_temperature_offset{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} -1
 fritzbox_temperature_offset{device_id="12345 0000000",device_name="HKR 1",device_type="Comet DECT"} -0.5
 ```
+
+
+# Docker
+Docker images are build for tags [jaymedh/fritzbox_smarthome_exporter](https://hub.docker.com/r/jaymedh/fritzbox_smarthome_exporter/).
+
+FRITZ!Box certificate may be mountet into the container, configuration can be done via arguments or environment variables (or both):
+```
+docker run -d --name fritzbox_smarthome_exporter -p 9103:9103 \
+  -v $(pwd)/boxcert.cer:/fritzbox.pem:ro \
+  -e PASSWORD=SuperSecret \
+  -e USERNAME=SmarthomeUser \
+  jaymedh/fritzbox_smarthome_exporter:v0.0.1 -url="https://fritz.box:8443" -cert=/fritzbox.pem
+```
