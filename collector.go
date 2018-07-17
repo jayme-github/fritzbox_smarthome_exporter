@@ -231,9 +231,9 @@ func stringToFloatMetric(ch chan<- prometheus.Metric, desc *prometheus.Desc, val
 // parseSwitchStrings parses state strings of switches into floats
 func parseSwitchStrings(val string) float64 {
 	switch val {
-	case "0", "automatic":
+	case "0", "auto":
 		return 0.0
-	case "1", "manual":
+	case "1", "manuell":
 		return 1.0
 	default:
 		return -1.0
