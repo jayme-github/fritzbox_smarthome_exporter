@@ -4,6 +4,7 @@ sudo: required
 env:
   global:
     - CGO_ENABLED=0
+    - GO111MODULE=on
     - secure: "vc8IfVWMLfWk6lfD/Eam3JIgkeEAyX9y2Wy8dKtHBq6vEw4+THk1O6esu71QVITk8FmsDVYaLqNp7e+8+05YwVZ9eWs6IPCw669QRt77mPN9N5ou45DAxQR5Ci4PO0mLMts7lM+RMYvlg+VgP/UJ7h0+TaKjXacK7FTXYQP8vA6f57IFIuSEK1ml2Kq3XA0Ij5iuUgdOybUGFA7v0ik3hqF79tRz9y0GADztnBAlu4aBSgD+C9kjjSrmIfdop8CCiXT24O9GCJXEW1KiTHh1Cmlaq2uauYR9xmVVAeJpJ5XiE3vWaoiw+FzhSIDEp26B1ZVuJSsNgoJoSPHVZhXLsrgUw64TpYb8Q0IQeJznyTbToTvR8Y1Kswrmt090BZs6qkEeVDMFkXXgd5gcqNBF9nBnN6g576J+pChJY+2o+pRCt/2nVfzPCC2VWQ75WqkCHdhoIWgKDmnikbu/9mOKv+GcBfyypSCxVuyWDP3XlNrKOxFt94SD10vXka01ZpiX9dXadzopuuWlghD84hGw4dyzGz9vgCrDCaYQfS2bQOIH0W1cXNGHO29LSl4OdXa2r9DBeswsa09cBxukjmp9r6mOO0Labl4769Le1/X7EgdDMOm4TBbFv2La9lqi0zF51L+dppHcifctpe1DwYw2M1bGioGN43gJ18Zw/h/M0wg="
     - secure: "YbirQP3gTEd7Knd6MOqcv6d2Wr09Y0Xb5JEGmSnFAfNpa5ynV6BcejU+SnBNg14+aJUiF5ezD6yZoYvJbpb9tehbUoxl6MURkiIR6sbVuXJCXKiW6RPpT/tY6iWkdhmHWx+uedYURZ3qhMpbez8KFZR0n6ndnUKwAQlSbSmZLaXwfZeA3N9Lirj2n/o/X/Whb6VEhk44QiyfJuwrs29ZJeSeolMlky7uNjjGqygV6j69kROy/ZM8+6dENoXx4toPAGVOeEnHpuKWbX5nLA3LniDtaJrF/3Trc957hUjJZlI44lkOVN5zzZOrsSeC536or87ktIy/v5j69ZNRcb9SYxlMf4W+MM0MhxW4UiAahIVv6DgjQ91fhZ+Cq2UkwtBswpdWg0ZcoWFkG8NfikqQ4s69T6IasMVyCxgQoPa3UfC7k3ZtcQmc+f+pJ6s0Ept95aXnSeUksg+tS7hbK76nbRCXZ3k8HhuCGsKloVaRLy+A2mxaiOlGvbUrknXfUtC9dGvNnA0h4YwB10O21Ybku0lgBzBEMfV7Tc2vL3/QK8qFZAABDBZXwE/7A1I90bNlLTeTg1vZRHLDi5VozPygm0laZGmHPxF5JGSfd7PH5JqhDoev7jmL1ohS9Yr//LsQMCqSDhQF9B883NREzb0t93PTkUVE35Ei5YVfWmuvjcM="
 
@@ -12,21 +13,16 @@ services:
 
 matrix:
   include:
-  - go: 1.10.x
+  - go: 1.11.x
     env:
      - LATEST=true
-  - go: 1.9
   - go: tip
   allow_failures:
   - go: tip
 
-before_install:
- - go get github.com/mitchellh/gox
- - curl -L -s https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 -o $GOPATH/bin/dep
- - chmod +x $GOPATH/bin/dep
-
 install:
- - dep ensure -vendor-only
+ - go mod download
+ - go get github.com/mitchellh/gox
 
 script:
  - go vet $(go list ./... | grep -v /vendor/)
