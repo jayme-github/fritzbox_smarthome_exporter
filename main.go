@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"sync"
 	"time"
 
@@ -24,8 +25,8 @@ type client struct {
 var (
 	fritzClient     client
 	fbURL           *url.URL
-	username        = flag.String("username", "", "FRITZ!Box username.")
-	password        = flag.String("password", "", "FRITZ!Box password.")
+	username        = flag.String("username", os.Getenv("FRITZBOX_USER"), "FRITZ!Box username (default: $FRITZBOX_USER).")
+	password        = flag.String("password", os.Getenv("FRITZBOX_PASSWORD"), "FRITZ!Box password (default: $FRITZBOX_PASSWORD).")
 	urlString       = flag.String("url", "https://fritz.box", "FRITZ!Box URL.")
 	noVerify        = flag.Bool("noverify", false, "Omit TLS verification of the FRITZ!Box certificate.")
 	certificatePath = flag.String("cert", "", "Path to the FRITZ!Box certificate.")
