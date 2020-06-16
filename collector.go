@@ -70,7 +70,7 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			dev.Name,
 		)
 
-		if dev.CanMeasureTemp() {
+		if dev.Present == 1 && dev.CanMeasureTemp() {
 			err = stringToFloatMetric(
 				ch, fc.TemperatureDesc, dev.Temperature.FmtCelsius(),
 				dev.Identifier, dev.Productname, dev.Name,
@@ -89,7 +89,7 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 
 		}
 
-		if dev.CanMeasurePower() {
+		if dev.Present == 1 && dev.CanMeasurePower() {
 			err = stringToFloatMetric(
 				ch, fc.EnergyWhDesc, dev.Powermeter.FmtEnergyWh(),
 				dev.Identifier, dev.Productname, dev.Name,

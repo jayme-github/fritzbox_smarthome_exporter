@@ -1,0 +1,74 @@
+# HELP fritzbox_device_info Device information
+# TYPE fritzbox_device_info gauge
+fritzbox_device_info{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200",functionbitmask="2944",fw_version="03.83",internal_id="11",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200",functionbitmask="2944",fw_version="03.83",internal_id="20",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200",functionbitmask="2944",fw_version="03.83",internal_id="208",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="214124 34625478542353",device_name="BTN_1",device_type="Motion Detector",functionbitmask="8193",fw_version="03.54",internal_id="19",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="32623646 23523626",device_name="SEC_2",device_type="Motion Detector",functionbitmask="16",fw_version="03.54",internal_id="18",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT",functionbitmask="320",fw_version="03.54",internal_id="12",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT",functionbitmask="320",fw_version="03.54",internal_id="15",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT",functionbitmask="320",fw_version="03.54",internal_id="16",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="8888 23523626",device_name="SEC_1",device_type="Motion Detector",functionbitmask="16",fw_version="03.54",internal_id="17",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200",functionbitmask="2944",fw_version="03.83",internal_id="666",manufacturer="AVM"} 1
+# HELP fritzbox_device_present Device connected (1) or not (0)
+# TYPE fritzbox_device_present gauge
+fritzbox_device_present{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 1
+fritzbox_device_present{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 1
+fritzbox_device_present{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 1
+fritzbox_device_present{device_id="214124 34625478542353",device_name="BTN_1",device_type="Motion Detector"} 1
+fritzbox_device_present{device_id="32623646 23523626",device_name="SEC_2",device_type="Motion Detector"} 1
+fritzbox_device_present{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 1
+fritzbox_device_present{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT"} 1
+fritzbox_device_present{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT"} 1
+fritzbox_device_present{device_id="8888 23523626",device_name="SEC_1",device_type="Motion Detector"} 1
+fritzbox_device_present{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 0
+# HELP fritzbox_energy Absolute energy consumption (in  Wh) since the device started operating
+# TYPE fritzbox_energy gauge
+fritzbox_energy{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 4012
+fritzbox_energy{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 4012
+fritzbox_energy{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 8012
+# HELP fritzbox_power Current power (in W), refreshed approx every 2 minutes
+# TYPE fritzbox_power gauge
+fritzbox_power{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 0
+fritzbox_power{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 7
+fritzbox_power{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 0
+# HELP fritzbox_switch_boxlock Switching via FRITZ!Box disabled? 1/0, -1 if not known or error
+# TYPE fritzbox_switch_boxlock gauge
+fritzbox_switch_boxlock{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 0
+fritzbox_switch_boxlock{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 0
+fritzbox_switch_boxlock{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 0
+fritzbox_switch_boxlock{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 1
+# HELP fritzbox_switch_devicelock Switching via device disabled 1/0, -1 if not known or error
+# TYPE fritzbox_switch_devicelock gauge
+fritzbox_switch_devicelock{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 0
+fritzbox_switch_devicelock{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 0
+fritzbox_switch_devicelock{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 0
+fritzbox_switch_devicelock{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 1
+# HELP fritzbox_switch_mode Switch mode 1/0 (manual/automatic), -1 if not known or error
+# TYPE fritzbox_switch_mode gauge
+fritzbox_switch_mode{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 1
+fritzbox_switch_mode{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 1
+fritzbox_switch_mode{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 1
+fritzbox_switch_mode{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 1
+# HELP fritzbox_switch_state Switch state 1/0 (on/off), -1 if not known or error
+# TYPE fritzbox_switch_state gauge
+fritzbox_switch_state{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 0
+fritzbox_switch_state{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 1
+fritzbox_switch_state{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 0
+fritzbox_switch_state{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 0
+# HELP fritzbox_temperature Temperature measured at the device sensor in units of 0.1 °C
+# TYPE fritzbox_temperature gauge
+fritzbox_temperature{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 21
+fritzbox_temperature{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 19.5
+fritzbox_temperature{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 22.5
+fritzbox_temperature{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 20
+fritzbox_temperature{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT"} 20
+fritzbox_temperature{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT"} 21
+# HELP fritzbox_temperature_offset Temperature offset (set by the user) in units of 0.1 °C
+# TYPE fritzbox_temperature_offset gauge
+fritzbox_temperature_offset{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 0
+fritzbox_temperature_offset{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 1
+fritzbox_temperature_offset{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 0
+fritzbox_temperature_offset{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
+fritzbox_temperature_offset{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT"} 0
+fritzbox_temperature_offset{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT"} 0.2

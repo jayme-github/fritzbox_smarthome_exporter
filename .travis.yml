@@ -13,7 +13,7 @@ services:
 
 matrix:
   include:
-  - go: 1.11.x
+  - go: 1.14.x
     env:
      - LATEST=true
   - go: tip
