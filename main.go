@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -25,8 +26,8 @@ type client struct {
 var (
 	fritzClient     client
 	fbURL           *url.URL
-	username        = flag.String("username", os.Getenv("FRITZBOX_USER"), "FRITZ!Box username (default: $FRITZBOX_USER).")
-	password        = flag.String("password", os.Getenv("FRITZBOX_PASSWORD"), "FRITZ!Box password (default: $FRITZBOX_PASSWORD).")
+	username        = flag.String("username", "", "FRITZ!Box username.")
+	password        = flag.String("password", "", "FRITZ!Box password.")
 	urlString       = flag.String("url", "https://fritz.box", "FRITZ!Box URL.")
 	noVerify        = flag.Bool("noverify", false, "Omit TLS verification of the FRITZ!Box certificate.")
 	certificatePath = flag.String("cert", "", "Path to the FRITZ!Box certificate.")
@@ -39,6 +40,25 @@ func validateFlags() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	// Deprecate special syntax variabled for username and password.
+	// All flags can be set via environment variables with the same name (uppercase)
+	// like USERNAME for -username and PASSWORD for -password.
+	fritzboxUser := os.Getenv("FRITZBOX_USER")
+	fritzboxPassword := os.Getenv("FRITZBOX_PASSWORD")
+	if fritzboxUser != "" {
+		fmt.Println("You are using the deprecated environment variable \"FRITZBOX_USER\", please use \"USERNAME\" instead.")
+		if *username == "" {
+			*username = fritzboxUser
+		}
+	}
+	if fritzboxPassword != "" {
+		fmt.Println("You are using the deprecated environment variable \"FRITZBOX_PASSWORD\", please use \"PASSWORD\" instead.")
+		if *password == "" {
+			*password = fritzboxPassword
+		}
+	}
+
 	if len(*username) == 0 {
 		log.Fatalln("No username provided.")
 	}
