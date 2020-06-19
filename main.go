@@ -23,8 +23,27 @@ type client struct {
 	*sync.Mutex
 }
 
+func (c *client) SafeLogin() error {
+	c.Lock()
+	defer c.Unlock()
+	return c.Login()
+}
+
+func (c *client) SafeList() (*fritz.Devicelist, error) {
+	c.Lock()
+	defer c.Unlock()
+	return c.List()
+}
+
+func NewClient(options ...fritz.Option) *client {
+	return &client{
+		HomeAuto: fritz.NewHomeAuto(options...),
+		Mutex:    &sync.Mutex{},
+	}
+}
+
 var (
-	fritzClient     client
+	fritzClient     *client
 	fbURL           *url.URL
 	username        = flag.String("username", "", "FRITZ!Box username.")
 	password        = flag.String("password", "", "FRITZ!Box password.")
@@ -74,34 +93,33 @@ func main() {
 		fritz.Credentials(*username, *password),
 		fritz.URL(fbURL),
 	}
+
 	if *noVerify {
 		options = append(options, fritz.SkipTLSVerify())
 	}
 
 	if !*noVerify && len(*certificatePath) > 0 {
 		crt, err := ioutil.ReadFile(*certificatePath)
-		if err == nil {
-			options = append(options, fritz.Certificate(crt))
-		} else {
-			log.Fatalf("Unable to read certificate file: %v\n", err)
+		if err != nil {
+			log.Fatalln("Unable to read certificate file:", err)
 		}
+		options = append(options, fritz.Certificate(crt))
 	}
 
-	fritzClient = client{
-		HomeAuto: fritz.NewHomeAuto(options...),
-		Mutex:    &sync.Mutex{},
+	fritzClient = NewClient(options...)
+
+	if err := fritzClient.SafeLogin(); err != nil {
+		log.Fatalln("Login failed:", err)
 	}
 
 	// Refresh login every 10 minutes
 	go func() {
 		for {
-			fritzClient.Lock()
-			err := fritzClient.Login()
+			time.Sleep(10 * time.Minute)
+			err := fritzClient.SafeLogin()
 			if err != nil {
 				log.Println("Login refresh failed:", err)
 			}
-			fritzClient.Unlock()
-			time.Sleep(10 * time.Minute)
 		}
 	}()
 

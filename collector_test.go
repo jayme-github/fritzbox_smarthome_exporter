@@ -4,7 +4,6 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"sync"
 	"testing"
 
 	"github.com/bpicode/fritzctl/fritz"
@@ -23,10 +22,7 @@ func TestCollector(t *testing.T) {
 		t.Fatalf("Failed to parse mock server url: %v", err)
 	}
 
-	fritzClient = client{
-		HomeAuto: fritz.NewHomeAuto(fritz.URL(fbURL)),
-		Mutex:    &sync.Mutex{},
-	}
+	fritzClient = NewClient(fritz.URL(fbURL))
 	fc := NewFritzCollector()
 
 	fixture := "test.metrics"

@@ -37,13 +37,20 @@ func (fc *fritzCollector) Describe(ch chan<- *prometheus.Desc) {
 
 func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 	var err error
-
-	fritzClient.Lock()
-	l, err := fritzClient.List()
-	fritzClient.Unlock()
+	l, err := fritzClient.SafeList()
 
 	if err != nil {
 		log.Println("Unable to collect data:", err)
+		ch <- prometheus.NewInvalidMetric(fc.InfoDesc, err)
+		ch <- prometheus.NewInvalidMetric(fc.PresentDesc, err)
+		ch <- prometheus.NewInvalidMetric(fc.TemperatureDesc, err)
+		ch <- prometheus.NewInvalidMetric(fc.TemperatureOffsetDesc, err)
+		ch <- prometheus.NewInvalidMetric(fc.EnergyWhDesc, err)
+		ch <- prometheus.NewInvalidMetric(fc.PowerWDesc, err)
+		ch <- prometheus.NewInvalidMetric(fc.SwitchState, err)
+		ch <- prometheus.NewInvalidMetric(fc.SwitchMode, err)
+		ch <- prometheus.NewInvalidMetric(fc.SwitchBoxLock, err)
+		ch <- prometheus.NewInvalidMetric(fc.SwitchDeviceLock, err)
 		return
 	}
 
