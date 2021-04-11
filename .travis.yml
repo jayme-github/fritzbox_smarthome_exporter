@@ -13,7 +13,7 @@ services:
 
 matrix:
   include:
-  - go: 1.14.x
+  - go: 1.16.x
     env:
      - LATEST=true
   - go: tip
@@ -27,7 +27,8 @@ install:
 script:
  - go vet $(go list ./... | grep -v /vendor/)
  - go test -v ./...
- - if [ "${LATEST}" = "true" ]; then gox -os="linux darwin windows" -arch="amd64 386" -output="build/fritzbox_smarthome_exporter.{{.OS}}.{{.Arch}}" -ldflags "-extldflags \"-static\" -X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
+ - if [ "${LATEST}" = "true" ]; then gox -os="darwin" -os="linux" -os="windows" -arch="amd64" -arch="arm64" -osarch="linux/386" -osarch="linux/arm" -osarch="windows/386"
+   -output="build/fritzbox_smarthome_exporter.{{.OS}}.{{.Arch}}" -ldflags "-extldflags \"-static\" -X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
  - if [ "${LATEST}" = "true" -a -n "${TRAVIS_TAG}" ]; then docker build -t "jaymedh/fritzbox_smarthome_exporter:${TRAVIS_TAG}" .; fi
 
 deploy:
