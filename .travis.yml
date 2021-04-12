@@ -1,4 +1,5 @@
 language: go
+dist: focal
 sudo: required
 
 env:
@@ -20,6 +21,11 @@ matrix:
   allow_failures:
   - go: tip
 
+before_install:
+ - mkdir -p ~/.docker/cli-plugins/
+ - curl --silent -L "https://github.com/docker/buildx/releases/download/v0.3.0/buildx-v0.3.0.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+ - chmod a+x ~/.docker/cli-plugins/docker-buildx
+
 install:
  - go mod download
  - go get github.com/mitchellh/gox
@@ -27,9 +33,14 @@ install:
 script:
  - go vet $(go list ./... | grep -v /vendor/)
  - go test -v ./...
- - if [ "${LATEST}" = "true" ]; then gox -os="darwin" -os="linux" -os="windows" -arch="amd64" -arch="arm64" -osarch="linux/386" -osarch="linux/arm" -osarch="windows/386"
-   -output="build/fritzbox_smarthome_exporter.{{.OS}}.{{.Arch}}" -ldflags "-extldflags \"-static\" -X main.Rev=`git rev-parse --short HEAD`" -verbose ./...; fi
- - if [ "${LATEST}" = "true" -a -n "${TRAVIS_TAG}" ]; then docker build -t "jaymedh/fritzbox_smarthome_exporter:${TRAVIS_TAG}" .; fi
+ - if [ "${LATEST}" = "true" ]; then
+   gox -os="darwin" -os="linux" -os="windows" -arch="amd64" -arch="arm64" -osarch="linux/386" -osarch="linux/arm" -osarch="windows/386"
+   -output="build/fritzbox_smarthome_exporter.{{.OS}}.{{.Arch}}" -ldflags "-extldflags \"-static\" -X main.Rev=`git rev-parse --short HEAD`" -verbose ./...;
+   fi
+ - if [ "${LATEST}" = "true" -a -n "${TRAVIS_TAG}" ]; then
+   docker buildx create --use;
+   docker buildx build --platform linux/amd64,linux/arm64,linux/arm,linux/386 -t "jaymedh/fritzbox_smarthome_exporter:${TRAVIS_TAG}" .;
+   fi
 
 deploy:
  - provider: releases
