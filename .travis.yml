@@ -54,6 +54,7 @@ deploy:
      tags: true
      condition: "$LATEST = true"
  - provider: script
+   skip_cleanup: true
    script: bash docker_push.sh
    on:
      repo: jayme-github/fritzbox_smarthome_exporter
