@@ -20,6 +20,8 @@ type fritzCollector struct {
 	SwitchMode            *prometheus.Desc
 	SwitchBoxLock         *prometheus.Desc
 	SwitchDeviceLock      *prometheus.Desc
+	ThermostatBatteryLow  *prometheus.Desc
+	ThermostatErrorCode   *prometheus.Desc
 }
 
 func (fc *fritzCollector) Describe(ch chan<- *prometheus.Desc) {
@@ -33,6 +35,8 @@ func (fc *fritzCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- fc.SwitchMode
 	ch <- fc.SwitchBoxLock
 	ch <- fc.SwitchDeviceLock
+	ch <- fc.ThermostatBatteryLow
+	ch <- fc.ThermostatErrorCode
 }
 
 func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
@@ -51,6 +55,8 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.NewInvalidMetric(fc.SwitchMode, err)
 		ch <- prometheus.NewInvalidMetric(fc.SwitchBoxLock, err)
 		ch <- prometheus.NewInvalidMetric(fc.SwitchDeviceLock, err)
+		ch <- prometheus.NewInvalidMetric(fc.ThermostatBatteryLow, err)
+		ch <- prometheus.NewInvalidMetric(fc.ThermostatErrorCode, err)
 		return
 	}
 
@@ -111,6 +117,41 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			)
 			if err != nil {
 				log.Printf("Unable to parse power data of \"%s\" : %v\n", dev.Name, err)
+			}
+		}
+
+		if dev.IsThermostat() {
+			if batteryLow, err := strconv.ParseFloat(dev.Thermostat.BatteryLow, 64); err == nil {
+				ch <- prometheus.MustNewConstMetric(
+					fc.ThermostatBatteryLow,
+					prometheus.GaugeValue,
+					batteryLow,
+					dev.Identifier,
+					dev.Productname,
+					dev.Name,
+				)
+			} else {
+				ch <- prometheus.NewInvalidMetric(fc.ThermostatBatteryLow, err)
+			}
+
+			var errCode float64
+			// Reset err so it can be used later to decide if we need to send the ThermostatErrCode metric
+			err = nil
+			if dev.Thermostat.ErrorCode != "" {
+				errCode, err = strconv.ParseFloat(dev.Thermostat.ErrorCode, 64)
+				if err != nil {
+					ch <- prometheus.NewInvalidMetric(fc.ThermostatErrorCode, err)
+				}
+			}
+			if err == nil {
+				ch <- prometheus.MustNewConstMetric(
+					fc.ThermostatErrorCode,
+					prometheus.GaugeValue,
+					errCode,
+					dev.Identifier,
+					dev.Productname,
+					dev.Name,
+				)
 			}
 		}
 
@@ -212,6 +253,18 @@ func NewFritzCollector() *fritzCollector {
 		SwitchDeviceLock: prometheus.NewDesc(
 			"fritzbox_switch_devicelock",
 			"Switching via device disabled 1/0, -1 if not known or error",
+			genericLabels,
+			prometheus.Labels{},
+		),
+		ThermostatBatteryLow: prometheus.NewDesc(
+			"fritzbox_thermostat_batterylow",
+			"0 if the battery is OK, 1 if it is running low on capacity (this seems to be very unreliable)",
+			genericLabels,
+			prometheus.Labels{},
+		),
+		ThermostatErrorCode: prometheus.NewDesc(
+			"fritzbox_thermostat_errorcode",
+			"Thermostat error code (0 = OK), see https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/AHA-HTTP-Interface.pdf",
 			genericLabels,
 			prometheus.Labels{},
 		),

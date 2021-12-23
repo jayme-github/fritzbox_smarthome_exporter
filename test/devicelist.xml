@@ -1,7 +1,6 @@
 <devicelist version="1">
 
-    <device identifier="12324 2131421" id="11" functionbitmask="2944" fwversion="03.83" manufacturer="AVM"
-            productname="FRITZ!DECT 200">
+    <device identifier="12324 2131421" id="11" functionbitmask="2944" fwversion="03.83" manufacturer="AVM" productname="FRITZ!DECT 200">
         <present>1</present>
         <name>SWITCH_1</name>
         <switch>
@@ -20,8 +19,7 @@
         </temperature>
     </device>
 
-    <device identifier="12324 2211244" id="20" functionbitmask="2944" fwversion="03.83" manufacturer="AVM"
-            productname="FRITZ!DECT 200">
+    <device identifier="12324 2211244" id="20" functionbitmask="2944" fwversion="03.83" manufacturer="AVM" productname="FRITZ!DECT 200">
         <present>1</present>
         <name>SWITCH_2</name>
         <switch>
@@ -40,8 +38,7 @@
         </temperature>
     </device>
 
-    <device identifier="12524 2211244" id="208" functionbitmask="2944" fwversion="03.83" manufacturer="AVM"
-            productname="FRITZ!DECT 200">
+    <device identifier="12524 2211244" id="208" functionbitmask="2944" fwversion="03.83" manufacturer="AVM" productname="FRITZ!DECT 200">
         <present>1</present>
         <name>SWITCH_3</name>
         <switch>
@@ -60,8 +57,7 @@
         </temperature>
     </device>
 
-    <device identifier="ALWAYS FAILZ" id="666" functionbitmask="2944" fwversion="03.83" manufacturer="AVM"
-            productname="FRITZ!DECT 200">
+    <device identifier="ALWAYS FAILZ" id="666" functionbitmask="2944" fwversion="03.83" manufacturer="AVM" productname="FRITZ!DECT 200">
         <present>0</present>
         <name>SWITCH_4_FAILING</name>
         <switch>
@@ -80,8 +76,7 @@
         </temperature>
     </device>
 
-    <device identifier="44363 2777777" id="12" functionbitmask="320" fwversion="03.54" manufacturer="AVM"
-            productname="Comet DECT">
+    <device identifier="44363 2777777" id="12" functionbitmask="320" fwversion="03.54" manufacturer="AVM" productname="Comet DECT">
         <present>1</present>
         <name>HKR_1</name>
         <temperature>
@@ -95,7 +90,7 @@
             <komfort>40</komfort>
             <lock>1</lock>
             <devicelock>1</devicelock>
-            <errorcode>0</errorcode>
+            <errorcode></errorcode>
             <batterylow>0</batterylow>
             <nextchange>
                 <endperiod>1506805200</endperiod>
@@ -104,8 +99,7 @@
         </hkr>
     </device>
 
-    <device identifier="55555 2777777" id="15" functionbitmask="320" fwversion="03.54" manufacturer="AVM"
-            productname="Comet DECT">
+    <device identifier="55555 2777777" id="15" functionbitmask="320" fwversion="03.54" manufacturer="AVM" productname="Comet DECT">
         <present>1</present>
         <name>HKR_2</name>
         <temperature>
@@ -128,8 +122,7 @@
         </hkr>
     </device>
 
-    <device identifier="55555 2777777" id="16" functionbitmask="320" fwversion="03.54" manufacturer="AVM"
-            productname="Comet DECT">
+    <device identifier="55555 2777777" id="16" functionbitmask="320" fwversion="03.54" manufacturer="AVM" productname="Comet DECT">
         <present>1</present>
         <name>HKR_3</name>
         <temperature>
@@ -148,8 +141,7 @@
         </hkr>
     </device>
 
-    <device identifier="8888 23523626" id="17" functionbitmask="16" fwversion="03.54" manufacturer="AVM"
-            productname="Motion Detector">
+    <device identifier="8888 23523626" id="17" functionbitmask="16" fwversion="03.54" manufacturer="AVM" productname="Motion Detector">
         <present>1</present>
         <name>SEC_1</name>
         <alert>
@@ -157,8 +149,7 @@
         </alert>
     </device>
 
-    <device identifier="32623646 23523626" id="18" functionbitmask="16" fwversion="03.54" manufacturer="AVM"
-            productname="Motion Detector">
+    <device identifier="32623646 23523626" id="18" functionbitmask="16" fwversion="03.54" manufacturer="AVM" productname="Motion Detector">
         <present>1</present>
         <name>SEC_2</name>
         <alert>
@@ -167,8 +158,7 @@
     </device>
 
 
-    <device identifier="214124 34625478542353" id="19" functionbitmask="8193" fwversion="03.54" manufacturer="AVM"
-            productname="Motion Detector">
+    <device identifier="214124 34625478542353" id="19" functionbitmask="8193" fwversion="03.54" manufacturer="AVM" productname="Motion Detector">
         <present>1</present>
         <name>BTN_1</name>
         <button>
@@ -176,8 +166,7 @@
         </button>
     </device>
 
-    <group identifier="45:FF:99-900" id="960" functionbitmask="320" fwversion="1.0"
-           manufacturer="AVM" productname="">
+    <group identifier="45:FF:99-900" id="960" functionbitmask="320" fwversion="1.0" manufacturer="AVM" productname="">
         <present>1</present>
         <name>G2</name>
         <groupinfo>
@@ -200,8 +189,7 @@
         </hkr>
     </group>
 
-    <group identifier="65:3A:18-900" id="900" functionbitmask="512" fwversion="1.0"
-           manufacturer="AVM" productname="">
+    <group identifier="65:3A:18-900" id="900" functionbitmask="512" fwversion="1.0" manufacturer="AVM" productname="">
         <present>1</present>
         <name>G1</name>
         <switch>

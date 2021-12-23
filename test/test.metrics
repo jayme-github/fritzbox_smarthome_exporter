@@ -72,3 +72,13 @@ fritzbox_temperature_offset{device_id="12524 2211244",device_name="SWITCH_3",dev
 fritzbox_temperature_offset{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
 fritzbox_temperature_offset{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT"} 0
 fritzbox_temperature_offset{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT"} 0.2
+# HELP fritzbox_thermostat_batterylow 0 if the battery is OK, 1 if it is running low on capacity (this seems to be very unreliable)
+# TYPE fritzbox_thermostat_batterylow gauge
+fritzbox_thermostat_batterylow{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
+fritzbox_thermostat_batterylow{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT"} 0
+fritzbox_thermostat_batterylow{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT"} 1
+# HELP fritzbox_thermostat_errorcode Thermostat error code (0 = OK), see https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/AHA-HTTP-Interface.pdf
+# TYPE fritzbox_thermostat_errorcode gauge
+fritzbox_thermostat_errorcode{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
+fritzbox_thermostat_errorcode{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT"} 1
+fritzbox_thermostat_errorcode{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT"} 0
