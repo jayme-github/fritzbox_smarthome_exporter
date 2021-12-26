@@ -5,6 +5,8 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/bpicode/fritzctl/fritz"
@@ -13,26 +15,31 @@ import (
 )
 
 func TestCollector(t *testing.T) {
-	m := mock.New()
-	m.DeviceList = "test/devicelist.xml"
-	m.Start()
-	defer m.Close()
+	deviceLists, _ := filepath.Glob(path.Join("test", "*.xml"))
+	for _, devicelistPath := range deviceLists {
+		t.Run(devicelistPath, func(t *testing.T) {
+			metricsPath := strings.TrimSuffix(devicelistPath, filepath.Ext(devicelistPath)) + ".metrics"
+			exp, err := os.Open(metricsPath)
+			if err != nil {
+				t.Skipf("Error opening fixture file: %q: %v", metricsPath, err)
+			}
 
-	fbURL, err := url.Parse(m.Server.URL)
-	if err != nil {
-		t.Fatalf("Failed to parse mock server url: %v", err)
-	}
+			m := mock.New()
+			m.DeviceList = devicelistPath
+			m.Start()
+			defer m.Close()
 
-	fritzClient = NewClient(fritz.URL(fbURL))
-	fc := NewFritzCollector()
+			fbURL, err := url.Parse(m.Server.URL)
+			if err != nil {
+				t.Errorf("Failed to parse mock server url: %v", err)
+			}
 
-	fixture := "test.metrics"
-	exp, err := os.Open(path.Join("test", fixture))
-	if err != nil {
-		t.Fatalf("Error opening fixture file: %q: %v", fixture, err)
-	}
-	if err := testutil.CollectAndCompare(fc, exp); err != nil {
-		t.Fatal("Unexpected metrics returned:", err)
+			fritzClient = NewClient(fritz.URL(fbURL))
+			fc := NewFritzCollector()
+			if err := testutil.CollectAndCompare(fc, exp); err != nil {
+				t.Error("Unexpected metrics returned:", err)
+			}
+		})
 	}
 }
 

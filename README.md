@@ -56,12 +56,27 @@ fritzbox_temperature{device_id="12345 0000000",device_name="HKR 1",device_type="
 # TYPE fritzbox_temperature_offset gauge
 fritzbox_temperature_offset{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} -1
 fritzbox_temperature_offset{device_id="12345 0000000",device_name="HKR 1",device_type="Comet DECT"} -0.5
+# HELP fritzbox_thermostat_battery_charge_level Battery charge level in percent
+# TYPE fritzbox_thermostat_battery_charge_level gauge
+fritzbox_thermostat_battery_charge_level{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 70
 # HELP fritzbox_thermostat_batterylow 0 if the battery is OK, 1 if it is running low on capacity (this seems to be very unreliable)
 # TYPE fritzbox_thermostat_batterylow gauge
 fritzbox_thermostat_batterylow{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
+# HELP fritzbox_thermostat_comfort Comfort temperature configured in units of 0.1 °C
+# TYPE fritzbox_thermostat_comfort gauge
+fritzbox_thermostat_comfort{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 19
 # HELP fritzbox_thermostat_errorcode Thermostat error code (0 = OK), see https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/AHA-HTTP-Interface.pdf
 # TYPE fritzbox_thermostat_errorcode gauge
 fritzbox_thermostat_errorcode{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
+# HELP fritzbox_thermostat_goal Desired temperature (user controlled) in units of 0.1 °C
+# TYPE fritzbox_thermostat_goal gauge
+fritzbox_thermostat_goal{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 17
+# HELP fritzbox_thermostat_saving Configured energy saving temperature in units of 0.1 °C
+# TYPE fritzbox_thermostat_saving gauge
+fritzbox_thermostat_saving{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 16
+# HELP fritzbox_thermostat_window_open 1 if detected an open window (usually turns off heating), 0 if not.
+# TYPE fritzbox_thermostat_window_open gauge
+fritzbox_thermostat_window_open{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
 ```
 
 
