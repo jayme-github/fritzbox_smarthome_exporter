@@ -56,13 +56,19 @@ fritzbox_temperature{device_id="12345 0000000",device_name="HKR 1",device_type="
 # TYPE fritzbox_temperature_offset gauge
 fritzbox_temperature_offset{device_id="01111 0111111",device_name="Switch 1",device_type="FRITZ!DECT 200"} -1
 fritzbox_temperature_offset{device_id="12345 0000000",device_name="HKR 1",device_type="Comet DECT"} -0.5
+# HELP fritzbox_thermostat_batterylow 0 if the battery is OK, 1 if it is running low on capacity (this seems to be very unreliable)
+# TYPE fritzbox_thermostat_batterylow gauge
+fritzbox_thermostat_batterylow{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
+# HELP fritzbox_thermostat_errorcode Thermostat error code (0 = OK), see https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/AHA-HTTP-Interface.pdf
+# TYPE fritzbox_thermostat_errorcode gauge
+fritzbox_thermostat_errorcode{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
 ```
 
 
 # Docker
 Docker images are build for tags [jaymedh/fritzbox_smarthome_exporter](https://hub.docker.com/r/jaymedh/fritzbox_smarthome_exporter/).
 
-FRITZ!Box certificate may be mountet into the container, configuration can be done via arguments or environment variables (or both):
+FRITZ!Box certificate may be mounted into the container, configuration can be done via arguments or environment variables (or both):
 ```
 docker run -d --name fritzbox_smarthome_exporter -p 9103:9103 \
   -v $(pwd)/boxcert.cer:/fritzbox.pem:ro \
