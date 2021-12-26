@@ -1,13 +1,19 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"strconv"
 
+	"github.com/bpicode/fritzctl/fritz"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-var genericLabels = []string{"device_id", "device_type", "device_name"}
+var (
+	genericLabels          = []string{"device_id", "device_type", "device_name"}
+	ErrParsingSwitchString = errors.New("Error parsing switch string")
+)
 
 type fritzCollector struct {
 	InfoDesc              *prometheus.Desc
@@ -84,44 +90,30 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 		)
 
 		if dev.Present == 1 && dev.CanMeasureTemp() {
-			err = stringToFloatMetric(
-				ch, fc.TemperatureDesc, dev.Temperature.FmtCelsius(),
-				dev.Identifier, dev.Productname, dev.Name,
-			)
-			if err != nil {
+			if err := stringToFloatMetric(ch, fc.TemperatureDesc, dev.Temperature.FmtCelsius(), &dev); err != nil {
 				log.Printf("Unable to parse temperature data of \"%s\" : %v\n", dev.Name, err)
 			}
 
-			err = stringToFloatMetric(
-				ch, fc.TemperatureOffsetDesc, dev.Temperature.FmtOffset(),
-				dev.Identifier, dev.Productname, dev.Name,
-			)
-			if err != nil {
+			if err := stringToFloatMetric(ch, fc.TemperatureOffsetDesc, dev.Temperature.FmtOffset(), &dev); err != nil {
 				log.Printf("Unable to parse temperature offset data of \"%s\" : %v\n", dev.Name, err)
 			}
-
 		}
 
 		if dev.Present == 1 && dev.CanMeasurePower() {
-			err = stringToFloatMetric(
-				ch, fc.EnergyWhDesc, dev.Powermeter.FmtEnergyWh(),
-				dev.Identifier, dev.Productname, dev.Name,
-			)
-			if err != nil {
+			if err := stringToFloatMetric(ch, fc.EnergyWhDesc, dev.Powermeter.FmtEnergyWh(), &dev); err != nil {
 				log.Printf("Unable to parse energy data of \"%s\" : %v\n", dev.Name, err)
 			}
 
-			err = stringToFloatMetric(
-				ch, fc.PowerWDesc, dev.Powermeter.FmtPowerW(),
-				dev.Identifier, dev.Productname, dev.Name,
-			)
-			if err != nil {
+			if err := stringToFloatMetric(ch, fc.PowerWDesc, dev.Powermeter.FmtPowerW(), &dev); err != nil {
 				log.Printf("Unable to parse power data of \"%s\" : %v\n", dev.Name, err)
 			}
 		}
 
 		if dev.IsThermostat() {
-			if batteryLow, err := strconv.ParseFloat(dev.Thermostat.BatteryLow, 64); err == nil {
+			if batteryLow, err := strconv.ParseFloat(dev.Thermostat.BatteryLow, 64); err != nil {
+				ch <- prometheus.NewInvalidMetric(fc.ThermostatBatteryLow, err)
+				log.Printf("Unable to parse battery low state of \"%s\" : %v\n", dev.Name, err)
+			} else {
 				ch <- prometheus.MustNewConstMetric(
 					fc.ThermostatBatteryLow,
 					prometheus.GaugeValue,
@@ -130,8 +122,6 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 					dev.Productname,
 					dev.Name,
 				)
-			} else {
-				ch <- prometheus.NewInvalidMetric(fc.ThermostatBatteryLow, err)
 			}
 
 			var errCode float64
@@ -141,6 +131,7 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 				errCode, err = strconv.ParseFloat(dev.Thermostat.ErrorCode, 64)
 				if err != nil {
 					ch <- prometheus.NewInvalidMetric(fc.ThermostatErrorCode, err)
+					log.Printf("Unable to parse thermostat error code of \"%s\" : %v\n", dev.Name, err)
 				}
 			}
 			if err == nil {
@@ -156,38 +147,18 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 		}
 
 		if dev.IsSwitch() {
-			ch <- prometheus.MustNewConstMetric(
-				fc.SwitchState,
-				prometheus.GaugeValue,
-				parseSwitchStrings(dev.Switch.State),
-				dev.Identifier,
-				dev.Productname,
-				dev.Name,
-			)
-			ch <- prometheus.MustNewConstMetric(
-				fc.SwitchMode,
-				prometheus.GaugeValue,
-				parseSwitchStrings(dev.Switch.Mode),
-				dev.Identifier,
-				dev.Productname,
-				dev.Name,
-			)
-			ch <- prometheus.MustNewConstMetric(
-				fc.SwitchBoxLock,
-				prometheus.GaugeValue,
-				parseSwitchStrings(dev.Switch.Lock),
-				dev.Identifier,
-				dev.Productname,
-				dev.Name,
-			)
-			ch <- prometheus.MustNewConstMetric(
-				fc.SwitchDeviceLock,
-				prometheus.GaugeValue,
-				parseSwitchStrings(dev.Switch.DeviceLock),
-				dev.Identifier,
-				dev.Productname,
-				dev.Name,
-			)
+			if err := switchMetric(ch, fc.SwitchState, dev.Switch.State, &dev); err != nil {
+				log.Printf("Unable to parse switch state of \"%s\" : %v\n", dev.Name, err)
+			}
+			if err := switchMetric(ch, fc.SwitchMode, dev.Switch.Mode, &dev); err != nil {
+				log.Printf("Unable to parse switch mode of \"%s\" : %v\n", dev.Name, err)
+			}
+			if err := switchMetric(ch, fc.SwitchBoxLock, dev.Switch.Lock, &dev); err != nil {
+				log.Printf("Unable to parse switch lock of \"%s\" : %v\n", dev.Name, err)
+			}
+			if err := switchMetric(ch, fc.SwitchDeviceLock, dev.Switch.DeviceLock, &dev); err != nil {
+				log.Printf("Unable to parse switch device lock of \"%s\" : %v\n", dev.Name, err)
+			}
 		}
 	}
 }
@@ -272,30 +243,49 @@ func NewFritzCollector() *fritzCollector {
 }
 
 // stringToFloatMetric converts a string `val` into a valid float metric
-func stringToFloatMetric(ch chan<- prometheus.Metric, desc *prometheus.Desc, val, identifier, productName, name string) error {
-	tc, err := strconv.ParseFloat(val, 64)
+func stringToFloatMetric(ch chan<- prometheus.Metric, desc *prometheus.Desc, value string, dev *fritz.Device) error {
+	val, err := strconv.ParseFloat(value, 64)
 	if err != nil {
+		ch <- prometheus.NewInvalidMetric(desc, err)
 		return err
 	}
 	ch <- prometheus.MustNewConstMetric(
 		desc,
 		prometheus.GaugeValue,
-		tc,
-		identifier,
-		productName,
-		name,
+		val,
+		dev.Identifier,
+		dev.Productname,
+		dev.Name,
 	)
 	return nil
 }
 
 // parseSwitchStrings parses state strings of switches into floats
-func parseSwitchStrings(val string) float64 {
+func parseSwitchStrings(val string) (float64, error) {
 	switch val {
 	case "0", "auto":
-		return 0.0
+		return 0.0, nil
 	case "1", "manuell":
-		return 1.0
+		return 1.0, nil
 	default:
-		return -1.0
+		return -1.0, fmt.Errorf("%s: %w", val, ErrParsingSwitchString)
 	}
+}
+
+// switchMetrics creates switch metrics
+func switchMetric(ch chan<- prometheus.Metric, desc *prometheus.Desc, value string, dev *fritz.Device) error {
+	val, err := parseSwitchStrings(value)
+	if err != nil {
+		ch <- prometheus.NewInvalidMetric(desc, err)
+		return err
+	}
+	ch <- prometheus.MustNewConstMetric(
+		desc,
+		prometheus.GaugeValue,
+		val,
+		dev.Identifier,
+		dev.Productname,
+		dev.Name,
+	)
+	return nil
 }
