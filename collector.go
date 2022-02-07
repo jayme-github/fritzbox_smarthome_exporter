@@ -57,7 +57,23 @@ func (fc *fritzCollector) Describe(ch chan<- *prometheus.Desc) {
 
 func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 	var err error
-	l, err := fritzClient.SafeList()
+	var l *fritz.Devicelist
+	retry := 1
+	for retry >= 0 {
+		l, err = fritzClient.SafeList()
+		if err == nil {
+			break
+		}
+		if retry > 0 {
+			log.Println("Failed to get devicelist, retrying:", err)
+			// Retry login once
+			loginErr := fritzClient.SafeLogin()
+			if loginErr != nil {
+				log.Println("Login on retry failed:", loginErr)
+			}
+			retry -= 1
+		}
+	}
 
 	if err != nil {
 		log.Println("Unable to collect data:", err)
