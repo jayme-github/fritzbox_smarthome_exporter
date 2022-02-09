@@ -18,6 +18,8 @@ var (
 type fritzCollector struct {
 	Info                         *prometheus.Desc
 	Present                      *prometheus.Desc
+	BatteryChargeLevel           *prometheus.Desc
+	BatteryLow                   *prometheus.Desc
 	Temperature                  *prometheus.Desc
 	TemperatureOffset            *prometheus.Desc
 	Humidity                     *prometheus.Desc
@@ -39,6 +41,8 @@ type fritzCollector struct {
 func (fc *fritzCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- fc.Info
 	ch <- fc.Present
+	ch <- fc.BatteryChargeLevel
+	ch <- fc.BatteryLow
 	ch <- fc.Temperature
 	ch <- fc.TemperatureOffset
 	ch <- fc.Humidity
@@ -81,6 +85,8 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 		log.Println("Unable to collect data:", err)
 		ch <- prometheus.NewInvalidMetric(fc.Info, err)
 		ch <- prometheus.NewInvalidMetric(fc.Present, err)
+		ch <- prometheus.NewInvalidMetric(fc.BatteryChargeLevel, err)
+		ch <- prometheus.NewInvalidMetric(fc.BatteryLow, err)
 		ch <- prometheus.NewInvalidMetric(fc.Temperature, err)
 		ch <- prometheus.NewInvalidMetric(fc.TemperatureOffset, err)
 		ch <- prometheus.NewInvalidMetric(fc.Humidity, err)
@@ -127,7 +133,6 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			if err := mustStringToFloatMetric(ch, fc.Temperature, dev.Temperature.FmtCelsius(), &dev); err != nil {
 				log.Printf("Unable to parse temperature data of \"%s\" : %v\n", dev.Name, err)
 			}
-
 			if err := mustStringToFloatMetric(ch, fc.TemperatureOffset, dev.Temperature.FmtOffset(), &dev); err != nil {
 				log.Printf("Unable to parse temperature offset data of \"%s\" : %v\n", dev.Name, err)
 			}
@@ -137,14 +142,23 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			if err := mustStringToFloatMetric(ch, fc.EnergyWh, dev.Powermeter.FmtEnergyWh(), &dev); err != nil {
 				log.Printf("Unable to parse energy data of \"%s\" : %v\n", dev.Name, err)
 			}
-
 			if err := mustStringToFloatMetric(ch, fc.PowerW, dev.Powermeter.FmtPowerW(), &dev); err != nil {
 				log.Printf("Unable to parse power data of \"%s\" : %v\n", dev.Name, err)
 			}
 		}
+
 		if dev.Present == 1 && dev.CanMeasureHumidity() {
 			if err := mustStringToFloatMetric(ch, fc.Humidity, dev.Humidity.FmtRelativeHumidity(), &dev); err != nil {
 				log.Printf("Unable to parse humidity data of \"%s\" : %v\n", dev.Name, err)
+			}
+		}
+
+		if dev.Present == 1 && dev.IsBatteryPowered() {
+			if err := mustStringToFloatMetric(ch, fc.BatteryChargeLevel, dev.BatteryChargeLevel, &dev); err != nil {
+				log.Printf("Unable to parse battery charge level of \"%s\" : %v\n", dev.Name, err)
+			}
+			if err := mustStringToFloatMetric(ch, fc.BatteryLow, dev.BatteryLow, &dev); err != nil {
+				log.Printf("Unable to parse battery low state of \"%s\" : %v\n", dev.Name, err)
 			}
 		}
 
@@ -153,7 +167,6 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			if err := canStringToFloatMetric(ch, fc.ThermostatBatteryChargeLevel, dev.Thermostat.BatteryChargeLevel, &dev); err != nil {
 				log.Printf("Unable to parse battery charge level of \"%s\" : %v\n", dev.Name, err)
 			}
-
 			if err := mustStringToFloatMetric(ch, fc.ThermostatBatteryLow, dev.Thermostat.BatteryLow, &dev); err != nil {
 				log.Printf("Unable to parse battery low state of \"%s\" : %v\n", dev.Name, err)
 			}
@@ -214,6 +227,18 @@ func NewFritzCollector() *fritzCollector {
 		Present: prometheus.NewDesc(
 			"fritzbox_device_present",
 			"Device connected (1) or not (0)",
+			genericLabels,
+			prometheus.Labels{},
+		),
+		BatteryChargeLevel: prometheus.NewDesc(
+			"fritzbox_battery_charge_level",
+			"Battery charge level in percent",
+			genericLabels,
+			prometheus.Labels{},
+		),
+		BatteryLow: prometheus.NewDesc(
+			"fritzbox_batterylow",
+			"0 if the battery is OK, 1 if it is running low on capacity (this seems to be very unreliable)",
 			genericLabels,
 			prometheus.Labels{},
 		),
