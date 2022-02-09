@@ -6,6 +6,7 @@ fritzbox_device_info{device_id="12345 0000003",device_name="HKR_2",device_type="
 fritzbox_device_info{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT",functionbitmask="320",fw_version="03.68",internal_id="23",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT",functionbitmask="320",fw_version="03.68",internal_id="24",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210",functionbitmask="35712",fw_version="04.17",internal_id="25",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440",functionbitmask="1048864",fw_version="05.21",internal_id="26",manufacturer="AVM"} 1
 # HELP fritzbox_device_present Device connected (1) or not (0)
 # TYPE fritzbox_device_present gauge
 fritzbox_device_present{device_id="12345 0000001",device_name="SW_1",device_type="FRITZ!DECT 200"} 1
@@ -14,10 +15,14 @@ fritzbox_device_present{device_id="12345 0000003",device_name="HKR_2",device_typ
 fritzbox_device_present{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 1
 fritzbox_device_present{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 1
 fritzbox_device_present{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210"} 1
+fritzbox_device_present{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 1
 # HELP fritzbox_energy Absolute energy consumption (in  Wh) since the device started operating
 # TYPE fritzbox_energy gauge
 fritzbox_energy{device_id="12345 0000001",device_name="SW_1",device_type="FRITZ!DECT 200"} 339584
 fritzbox_energy{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210"} 40525
+# HELP fritzbox_humidity_percent Relative humidity measured as full percentile
+# TYPE fritzbox_humidity_percent gauge
+fritzbox_humidity_percent{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 54
 # HELP fritzbox_power Current power (in W), refreshed approx every 2 minutes
 # TYPE fritzbox_power gauge
 fritzbox_power{device_id="12345 0000001",device_name="SW_1",device_type="FRITZ!DECT 200"} 0
@@ -46,6 +51,7 @@ fritzbox_temperature{device_id="12345 0000003",device_name="HKR_2",device_type="
 fritzbox_temperature{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 16.5
 fritzbox_temperature{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 17.5
 fritzbox_temperature{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210"} 9.5
+fritzbox_temperature{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 17.5
 # HELP fritzbox_temperature_offset Temperature offset (set by the user) in units of 0.1 °C
 # TYPE fritzbox_temperature_offset gauge
 fritzbox_temperature_offset{device_id="12345 0000001",device_name="SW_1",device_type="FRITZ!DECT 200"} 0
@@ -54,6 +60,7 @@ fritzbox_temperature_offset{device_id="12345 0000003",device_name="HKR_2",device
 fritzbox_temperature_offset{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} -2
 fritzbox_temperature_offset{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} -1
 fritzbox_temperature_offset{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210"} 0
+fritzbox_temperature_offset{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 0
 # HELP fritzbox_thermostat_battery_charge_level Battery charge level in percent
 # TYPE fritzbox_thermostat_battery_charge_level gauge
 fritzbox_thermostat_battery_charge_level{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 70

@@ -12,7 +12,7 @@ import (
 
 var (
 	genericLabels          = []string{"device_id", "device_type", "device_name"}
-	ErrParsingSwitchString = errors.New("Error parsing switch string")
+	ErrParsingSwitchString = errors.New("error parsing switch string")
 )
 
 type fritzCollector struct {
@@ -20,6 +20,7 @@ type fritzCollector struct {
 	Present                      *prometheus.Desc
 	Temperature                  *prometheus.Desc
 	TemperatureOffset            *prometheus.Desc
+	Humidity                     *prometheus.Desc
 	EnergyWh                     *prometheus.Desc
 	PowerW                       *prometheus.Desc
 	SwitchState                  *prometheus.Desc
@@ -40,6 +41,7 @@ func (fc *fritzCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- fc.Present
 	ch <- fc.Temperature
 	ch <- fc.TemperatureOffset
+	ch <- fc.Humidity
 	ch <- fc.EnergyWh
 	ch <- fc.PowerW
 	ch <- fc.SwitchState
@@ -81,6 +83,7 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.NewInvalidMetric(fc.Present, err)
 		ch <- prometheus.NewInvalidMetric(fc.Temperature, err)
 		ch <- prometheus.NewInvalidMetric(fc.TemperatureOffset, err)
+		ch <- prometheus.NewInvalidMetric(fc.Humidity, err)
 		ch <- prometheus.NewInvalidMetric(fc.EnergyWh, err)
 		ch <- prometheus.NewInvalidMetric(fc.PowerW, err)
 		ch <- prometheus.NewInvalidMetric(fc.SwitchState, err)
@@ -137,6 +140,11 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 
 			if err := mustStringToFloatMetric(ch, fc.PowerW, dev.Powermeter.FmtPowerW(), &dev); err != nil {
 				log.Printf("Unable to parse power data of \"%s\" : %v\n", dev.Name, err)
+			}
+		}
+		if dev.Present == 1 && dev.CanMeasureHumidity() {
+			if err := mustStringToFloatMetric(ch, fc.Humidity, dev.Humidity.FmtRelativeHumidity(), &dev); err != nil {
+				log.Printf("Unable to parse humidity data of \"%s\" : %v\n", dev.Name, err)
 			}
 		}
 
@@ -218,6 +226,12 @@ func NewFritzCollector() *fritzCollector {
 		TemperatureOffset: prometheus.NewDesc(
 			"fritzbox_temperature_offset",
 			"Temperature offset (set by the user) in units of 0.1 °C",
+			genericLabels,
+			prometheus.Labels{},
+		),
+		Humidity: prometheus.NewDesc(
+			"fritzbox_humidity_percent",
+			"Relative humidity measured as full percentile",
 			genericLabels,
 			prometheus.Labels{},
 		),
