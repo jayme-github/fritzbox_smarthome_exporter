@@ -21,6 +21,7 @@ fritzbox_device_info{device_id="12345 0000004",device_name="HKR_3",device_type="
 fritzbox_device_info{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT",functionbitmask="320",fw_version="03.68",internal_id="24",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210",functionbitmask="35712",fw_version="04.17",internal_id="25",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440",functionbitmask="1048864",fw_version="05.21",internal_id="26",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="12345 0000008",device_name="SW_3",device_type="FRITZ!DECT 200",functionbitmask="35712",fw_version="04.16",internal_id="27",manufacturer="AVM"} 1
 # HELP fritzbox_device_present Device connected (1) or not (0)
 # TYPE fritzbox_device_present gauge
 fritzbox_device_present{device_id="12345 0000001",device_name="SW_1",device_type="FRITZ!DECT 200"} 1
@@ -30,6 +31,7 @@ fritzbox_device_present{device_id="12345 0000004",device_name="HKR_3",device_typ
 fritzbox_device_present{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 1
 fritzbox_device_present{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210"} 1
 fritzbox_device_present{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 1
+fritzbox_device_present{device_id="12345 0000008",device_name="SW_3",device_type="FRITZ!DECT 200"} 0
 # HELP fritzbox_energy Absolute energy consumption (in  Wh) since the device started operating
 # TYPE fritzbox_energy gauge
 fritzbox_energy{device_id="12345 0000001",device_name="SW_1",device_type="FRITZ!DECT 200"} 339584

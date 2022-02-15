@@ -129,7 +129,12 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			dev.Name,
 		)
 
-		if dev.Present == 1 && dev.CanMeasureTemp() {
+		// Not present devices do not carry any more metrics
+		if dev.Present != 1 {
+			continue
+		}
+
+		if dev.CanMeasureTemp() {
 			if err := mustStringToFloatMetric(ch, fc.Temperature, dev.Temperature.FmtCelsius(), &dev); err != nil {
 				log.Printf("Unable to parse temperature data of \"%s\" : %v\n", dev.Name, err)
 			}
@@ -138,7 +143,7 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			}
 		}
 
-		if dev.Present == 1 && dev.CanMeasurePower() {
+		if dev.CanMeasurePower() {
 			if err := mustStringToFloatMetric(ch, fc.EnergyWh, dev.Powermeter.FmtEnergyWh(), &dev); err != nil {
 				log.Printf("Unable to parse energy data of \"%s\" : %v\n", dev.Name, err)
 			}
@@ -147,13 +152,13 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 			}
 		}
 
-		if dev.Present == 1 && dev.CanMeasureHumidity() {
+		if dev.CanMeasureHumidity() {
 			if err := mustStringToFloatMetric(ch, fc.Humidity, dev.Humidity.FmtRelativeHumidity(), &dev); err != nil {
 				log.Printf("Unable to parse humidity data of \"%s\" : %v\n", dev.Name, err)
 			}
 		}
 
-		if dev.Present == 1 && dev.IsBatteryPowered() {
+		if dev.IsBatteryPowered() {
 			if err := mustStringToFloatMetric(ch, fc.BatteryChargeLevel, dev.BatteryChargeLevel, &dev); err != nil {
 				log.Printf("Unable to parse battery charge level of \"%s\" : %v\n", dev.Name, err)
 			}

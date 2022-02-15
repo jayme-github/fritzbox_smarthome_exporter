@@ -203,4 +203,27 @@
             <lastpressedtimestamp></lastpressedtimestamp>
         </button>
     </device>
+    <device identifier="12345 0000008" id="27" functionbitmask="35712" fwversion="04.16" manufacturer="AVM" productname="FRITZ!DECT 200">
+        <present>0</present>
+        <txbusy>0</txbusy>
+        <name>SW_3</name>
+        <switch>
+            <state></state>
+            <mode></mode>
+            <lock></lock>
+            <devicelock></devicelock>
+        </switch>
+        <simpleonoff>
+            <state></state>
+        </simpleonoff>
+        <powermeter>
+            <voltage></voltage>
+            <power></power>
+            <energy></energy>
+        </powermeter>
+        <temperature>
+            <celsius></celsius>
+            <offset></offset>
+        </temperature>
+    </device>
 </devicelist>

@@ -37,25 +37,21 @@ fritzbox_power{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRI
 fritzbox_switch_boxlock{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 0
 fritzbox_switch_boxlock{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 0
 fritzbox_switch_boxlock{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 0
-fritzbox_switch_boxlock{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 1
 # HELP fritzbox_switch_devicelock Switching via device disabled 1/0, -1 if not known or error
 # TYPE fritzbox_switch_devicelock gauge
 fritzbox_switch_devicelock{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 0
 fritzbox_switch_devicelock{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 0
 fritzbox_switch_devicelock{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 0
-fritzbox_switch_devicelock{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 1
 # HELP fritzbox_switch_mode Switch mode 1/0 (manual/automatic), -1 if not known or error
 # TYPE fritzbox_switch_mode gauge
 fritzbox_switch_mode{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 1
 fritzbox_switch_mode{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 1
 fritzbox_switch_mode{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 1
-fritzbox_switch_mode{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 1
 # HELP fritzbox_switch_state Switch state 1/0 (on/off), -1 if not known or error
 # TYPE fritzbox_switch_state gauge
 fritzbox_switch_state{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 0
 fritzbox_switch_state{device_id="12324 2211244",device_name="SWITCH_2",device_type="FRITZ!DECT 200"} 1
 fritzbox_switch_state{device_id="12524 2211244",device_name="SWITCH_3",device_type="FRITZ!DECT 200"} 0
-fritzbox_switch_state{device_id="ALWAYS FAILZ",device_name="SWITCH_4_FAILING",device_type="FRITZ!DECT 200"} 0
 # HELP fritzbox_temperature Temperature measured at the device sensor in units of 0.1 °C
 # TYPE fritzbox_temperature gauge
 fritzbox_temperature{device_id="12324 2131421",device_name="SWITCH_1",device_type="FRITZ!DECT 200"} 21
