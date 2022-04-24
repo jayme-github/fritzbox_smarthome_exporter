@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/bpicode/fritzctl/fritz"
+	fritzctllogger "github.com/bpicode/fritzctl/logger"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -50,11 +51,18 @@ var (
 	urlString       = flag.String("url", "https://fritz.box", "FRITZ!Box URL.")
 	noVerify        = flag.Bool("noverify", false, "Omit TLS verification of the FRITZ!Box certificate.")
 	certificatePath = flag.String("cert", "", "Path to the FRITZ!Box certificate.")
+	loglevel        = flag.String("loglevel", "warn", "Logging verbosity (debug, info, warn, error or none)")
 )
 
 func validateFlags() {
 	var err error
 	flag.Parse()
+
+	l := &fritzctllogger.Level{}
+	if err := l.Set(*loglevel); err != nil {
+		log.Fatalln(err)
+	}
+
 	fbURL, err = url.Parse(*urlString)
 	if err != nil {
 		log.Fatalln(err)

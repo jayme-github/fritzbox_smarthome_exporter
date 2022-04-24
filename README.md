@@ -11,6 +11,7 @@ Export information about your smarthome devices (switches, powermeters, thermost
 ```
 Usage of ./fritzbox_smarthome_exporter:
   -cert="": Path to the FRITZ!Box certificate.
+  -loglevel="warn": Logging verbosity (debug, info, warn or error)
   -noverify=false: Omit TLS verification of the FRITZ!Box certificate.
   -password="": FRITZ!Box password.
   -url="https://fritz.box": FRITZ!Box URL.
