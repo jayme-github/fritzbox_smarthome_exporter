@@ -4,6 +4,7 @@ fritzbox_battery_charge_level{device_id="12345 0000002",device_name="HKR_1",devi
 fritzbox_battery_charge_level{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 100
 fritzbox_battery_charge_level{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 20
 fritzbox_battery_charge_level{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 1
+fritzbox_battery_charge_level{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 1
 fritzbox_battery_charge_level{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 100
 # HELP fritzbox_batterylow 0 if the battery is OK, 1 if it is running low on capacity (this seems to be very unreliable)
 # TYPE fritzbox_batterylow gauge
@@ -11,6 +12,7 @@ fritzbox_batterylow{device_id="12345 0000002",device_name="HKR_1",device_type="C
 fritzbox_batterylow{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 0
 fritzbox_batterylow{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 0
 fritzbox_batterylow{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 0
+fritzbox_batterylow{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 0
 fritzbox_batterylow{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 0
 # HELP fritzbox_device_info Device information
 # TYPE fritzbox_device_info gauge
@@ -19,6 +21,7 @@ fritzbox_device_info{device_id="12345 0000002",device_name="HKR_1",device_type="
 fritzbox_device_info{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT",functionbitmask="320",fw_version="03.68",internal_id="22",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT",functionbitmask="320",fw_version="03.68",internal_id="23",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT",functionbitmask="320",fw_version="03.68",internal_id="24",manufacturer="AVM"} 1
+fritzbox_device_info{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT",functionbitmask="320",fw_version="03.68",internal_id="24",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210",functionbitmask="35712",fw_version="04.17",internal_id="25",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440",functionbitmask="1048864",fw_version="05.21",internal_id="26",manufacturer="AVM"} 1
 fritzbox_device_info{device_id="12345 0000008",device_name="SW_3",device_type="FRITZ!DECT 200",functionbitmask="35712",fw_version="04.16",internal_id="27",manufacturer="AVM"} 1
@@ -29,6 +32,7 @@ fritzbox_device_present{device_id="12345 0000002",device_name="HKR_1",device_typ
 fritzbox_device_present{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 1
 fritzbox_device_present{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 1
 fritzbox_device_present{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 1
+fritzbox_device_present{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 1
 fritzbox_device_present{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210"} 1
 fritzbox_device_present{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 1
 fritzbox_device_present{device_id="12345 0000008",device_name="SW_3",device_type="FRITZ!DECT 200"} 0
@@ -66,6 +70,7 @@ fritzbox_temperature{device_id="12345 0000002",device_name="HKR_1",device_type="
 fritzbox_temperature{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 17.5
 fritzbox_temperature{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 16.5
 fritzbox_temperature{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 17.5
+fritzbox_temperature{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 17.5
 fritzbox_temperature{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210"} 9.5
 fritzbox_temperature{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 17.5
 # HELP fritzbox_temperature_offset Temperature offset (set by the user) in units of 0.1 °C
@@ -75,6 +80,7 @@ fritzbox_temperature_offset{device_id="12345 0000002",device_name="HKR_1",device
 fritzbox_temperature_offset{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} -0.5
 fritzbox_temperature_offset{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} -2
 fritzbox_temperature_offset{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} -1
+fritzbox_temperature_offset{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} -1
 fritzbox_temperature_offset{device_id="12345 0000006",device_name="SW_2",device_type="FRITZ!DECT 210"} 0
 fritzbox_temperature_offset{device_id="12345 0000007",device_name="BUTTON_1",device_type="FRITZ!DECT 440"} 0
 # HELP fritzbox_thermostat_battery_charge_level Battery charge level in percent
@@ -83,24 +89,28 @@ fritzbox_thermostat_battery_charge_level{device_id="12345 0000002",device_name="
 fritzbox_thermostat_battery_charge_level{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 100
 fritzbox_thermostat_battery_charge_level{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 20
 fritzbox_thermostat_battery_charge_level{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 1
+fritzbox_thermostat_battery_charge_level{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 1
 # HELP fritzbox_thermostat_batterylow 0 if the battery is OK, 1 if it is running low on capacity (this seems to be very unreliable)
 # TYPE fritzbox_thermostat_batterylow gauge
 fritzbox_thermostat_batterylow{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 0
 fritzbox_thermostat_batterylow{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 0
 fritzbox_thermostat_batterylow{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 0
 fritzbox_thermostat_batterylow{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 0
+fritzbox_thermostat_batterylow{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 0
 # HELP fritzbox_thermostat_comfort Comfort temperature configured in units of 0.1 °C
 # TYPE fritzbox_thermostat_comfort gauge
 fritzbox_thermostat_comfort{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 19
 fritzbox_thermostat_comfort{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 20
 fritzbox_thermostat_comfort{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 18.5
 fritzbox_thermostat_comfort{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 17
+fritzbox_thermostat_comfort{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 17
 # HELP fritzbox_thermostat_errorcode Thermostat error code (0 = OK), see https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/AHA-HTTP-Interface.pdf
 # TYPE fritzbox_thermostat_errorcode gauge
 fritzbox_thermostat_errorcode{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 0
 fritzbox_thermostat_errorcode{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 0
 fritzbox_thermostat_errorcode{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 0
 fritzbox_thermostat_errorcode{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 0
+fritzbox_thermostat_errorcode{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 0
 # HELP fritzbox_thermostat_goal Desired temperature (user controlled) in units of 0.1 °C
 # TYPE fritzbox_thermostat_goal gauge
 fritzbox_thermostat_goal{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 16
@@ -113,9 +123,18 @@ fritzbox_thermostat_saving{device_id="12345 0000002",device_name="HKR_1",device_
 fritzbox_thermostat_saving{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 16
 fritzbox_thermostat_saving{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 16
 fritzbox_thermostat_saving{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 16
+fritzbox_thermostat_saving{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 16
+# HELP fritzbox_thermostat_state Thermostat state 1/0 (on/off), -1 if unknown or error
+# TYPE fritzbox_thermostat_state gauge
+fritzbox_thermostat_state{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 1
+fritzbox_thermostat_state{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 1
+fritzbox_thermostat_state{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 1
+fritzbox_thermostat_state{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 1
+fritzbox_thermostat_state{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 0
 # HELP fritzbox_thermostat_window_open 1 if detected an open window (usually turns off heating), 0 if not.
 # TYPE fritzbox_thermostat_window_open gauge
 fritzbox_thermostat_window_open{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 0
 fritzbox_thermostat_window_open{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 0
 fritzbox_thermostat_window_open{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 0
 fritzbox_thermostat_window_open{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 0
+fritzbox_thermostat_window_open{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 0

@@ -90,6 +90,9 @@ fritzbox_thermostat_goal{device_id="12345 0000002",device_name="HKR_1",device_ty
 # HELP fritzbox_thermostat_saving Configured energy saving temperature in units of 0.1 °C
 # TYPE fritzbox_thermostat_saving gauge
 fritzbox_thermostat_saving{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 16
+# HELP fritzbox_thermostat_state Thermostat state 1/0 (on/off), -1 if unknown or error
+# TYPE fritzbox_thermostat_state gauge
+fritzbox_thermostat_state{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 1
 # HELP fritzbox_thermostat_window_open 1 if detected an open window (usually turns off heating), 0 if not.
 # TYPE fritzbox_thermostat_window_open gauge
 fritzbox_thermostat_window_open{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 0

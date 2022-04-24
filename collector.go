@@ -36,6 +36,7 @@ type fritzCollector struct {
 	ThermostatTempGoal           *prometheus.Desc
 	ThermostatTempSaving         *prometheus.Desc
 	ThermostatWindowOpen         *prometheus.Desc
+	ThermostatState              *prometheus.Desc
 }
 
 func (fc *fritzCollector) Describe(ch chan<- *prometheus.Desc) {
@@ -59,6 +60,7 @@ func (fc *fritzCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- fc.ThermostatTempGoal
 	ch <- fc.ThermostatTempSaving
 	ch <- fc.ThermostatWindowOpen
+	ch <- fc.ThermostatState
 }
 
 func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
@@ -103,6 +105,7 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 		ch <- prometheus.NewInvalidMetric(fc.ThermostatTempGoal, err)
 		ch <- prometheus.NewInvalidMetric(fc.ThermostatTempSaving, err)
 		ch <- prometheus.NewInvalidMetric(fc.ThermostatWindowOpen, err)
+		ch <- prometheus.NewInvalidMetric(fc.ThermostatState, err)
 		return
 	}
 
@@ -168,10 +171,9 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 		}
 
 		if dev.IsThermostat() {
-			// Battery charge level is optional
-			if err := canStringToFloatMetric(ch, fc.ThermostatBatteryChargeLevel, dev.Thermostat.BatteryChargeLevel, &dev); err != nil {
-				log.Printf("Unable to parse battery charge level of \"%s\" : %v\n", dev.Name, err)
-			}
+			// Battery charge level is optional, earlier FritzOS versions don't export that
+			_ = canStringToFloatMetric(ch, fc.ThermostatBatteryChargeLevel, dev.Thermostat.BatteryChargeLevel, &dev)
+
 			if err := mustStringToFloatMetric(ch, fc.ThermostatBatteryLow, dev.Thermostat.BatteryLow, &dev); err != nil {
 				log.Printf("Unable to parse battery low state of \"%s\" : %v\n", dev.Name, err)
 			}
@@ -185,21 +187,30 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 				log.Printf("Unable to parse thermostat error code of \"%s\" : %v\n", dev.Name, err)
 			}
 
-			// Comfort, Goal and Saving temperature are optional
-			if err := canStringToFloatMetric(ch, fc.ThermostatTempComfort, dev.Thermostat.FmtComfortTemperature(), &dev); err != nil {
+			state := dev.Thermostat.State()
+			ch <- prometheus.MustNewConstMetric(
+				fc.ThermostatState,
+				prometheus.GaugeValue,
+				float64(state),
+				dev.Identifier,
+				dev.Productname,
+				dev.Name,
+			)
+			// Don't try to update goal temperature if thermostat is OFF (or in unknown state)
+			if state == 1 {
+				if err := mustStringToFloatMetric(ch, fc.ThermostatTempGoal, dev.Thermostat.FmtGoalTemperature(), &dev); err != nil {
+					log.Printf("Unable to parse goal temperature of \"%s\" : %v\n", dev.Name, err)
+				}
+			}
+			if err := mustStringToFloatMetric(ch, fc.ThermostatTempComfort, dev.Thermostat.FmtComfortTemperature(), &dev); err != nil {
 				log.Printf("Unable to parse comfort temperature of \"%s\" : %v\n", dev.Name, err)
 			}
-			if err := canStringToFloatMetric(ch, fc.ThermostatTempGoal, dev.Thermostat.FmtGoalTemperature(), &dev); err != nil {
-				log.Printf("Unable to parse goal temperature of \"%s\" : %v\n", dev.Name, err)
-			}
-			if err := canStringToFloatMetric(ch, fc.ThermostatTempSaving, dev.Thermostat.FmtSavingTemperature(), &dev); err != nil {
+			if err := mustStringToFloatMetric(ch, fc.ThermostatTempSaving, dev.Thermostat.FmtSavingTemperature(), &dev); err != nil {
 				log.Printf("Unable to parse saving temperature of \"%s\" : %v\n", dev.Name, err)
 			}
 
-			// Window Open is optional
-			if err := canStringToFloatMetric(ch, fc.ThermostatWindowOpen, dev.Thermostat.WindowOpen, &dev); err != nil {
-				log.Printf("Unable to parse window open state of \"%s\" : %v\n", dev.Name, err)
-			}
+			// Window Open is optional, earlier FritzOS versions don't export that
+			_ = canStringToFloatMetric(ch, fc.ThermostatWindowOpen, dev.Thermostat.WindowOpen, &dev)
 		}
 
 		if dev.IsSwitch() {
@@ -340,6 +351,12 @@ func NewFritzCollector() *fritzCollector {
 		ThermostatWindowOpen: prometheus.NewDesc(
 			"fritzbox_thermostat_window_open",
 			"1 if detected an open window (usually turns off heating), 0 if not.",
+			genericLabels,
+			prometheus.Labels{},
+		),
+		ThermostatState: prometheus.NewDesc(
+			"fritzbox_thermostat_state",
+			"Thermostat state 1/0 (on/off), -1 if unknown or error",
 			genericLabels,
 			prometheus.Labels{},
 		),

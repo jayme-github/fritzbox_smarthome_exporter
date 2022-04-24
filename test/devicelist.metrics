@@ -91,3 +91,8 @@ fritzbox_thermostat_goal{device_id="55555 2777777",device_name="HKR_3",device_ty
 fritzbox_thermostat_saving{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 18
 fritzbox_thermostat_saving{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT"} 18
 fritzbox_thermostat_saving{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT"} 17
+# HELP fritzbox_thermostat_state Thermostat state 1/0 (on/off), -1 if unknown or error
+# TYPE fritzbox_thermostat_state gauge
+fritzbox_thermostat_state{device_id="44363 2777777",device_name="HKR_1",device_type="Comet DECT"} 0
+fritzbox_thermostat_state{device_id="55555 2777777",device_name="HKR_2",device_type="Comet DECT"} 0
+fritzbox_thermostat_state{device_id="55555 2777777",device_name="HKR_3",device_type="Comet DECT"} 1

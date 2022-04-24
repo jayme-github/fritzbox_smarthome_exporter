@@ -26,4 +26,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/bpicode/fritzctl => github.com/jayme-github/fritzctl v1.4.23-0.20220206160018-2185c66d7f6f
+replace github.com/bpicode/fritzctl => github.com/jayme-github/fritzctl v1.4.23-0.20220424111445-826538a7c038
