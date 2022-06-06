@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"runtime"
 	"sync"
 	"time"
 
@@ -44,6 +45,9 @@ func NewClient(options ...fritz.Option) *client {
 }
 
 var (
+	Version         = "development"
+	GitCommit       = ""
+	GoVersion       = runtime.Version()
 	fritzClient     *client
 	fbURL           *url.URL
 	username        = flag.String("username", "", "FRITZ!Box username.")
@@ -52,11 +56,12 @@ var (
 	noVerify        = flag.Bool("noverify", false, "Omit TLS verification of the FRITZ!Box certificate.")
 	certificatePath = flag.String("cert", "", "Path to the FRITZ!Box certificate.")
 	loglevel        = flag.String("loglevel", "warn", "Logging verbosity (debug, info, warn, error or none)")
+	listenAddress   = flag.String("listen-address", ":9103", "Address on which to expose metrics")
+	version         = flag.Bool("version", false, "Print version number and exit")
 )
 
 func validateFlags() {
 	var err error
-	flag.Parse()
 
 	l := &fritzctllogger.Level{}
 	if err := l.Set(*loglevel); err != nil {
@@ -95,6 +100,13 @@ func validateFlags() {
 }
 
 func main() {
+	flag.Parse()
+
+	if *version {
+		fmt.Printf("Version: \"%s\", GitCommit: \"%s\", GoVersion: \"%s\"\n", Version, GitCommit, GoVersion)
+		return
+	}
+
 	validateFlags()
 
 	options := []fritz.Option{
@@ -135,7 +147,7 @@ func main() {
 	prometheus.MustRegister(fc)
 	http.Handle("/metrics", promhttp.Handler())
 
-	if err := http.ListenAndServe(":9103", nil); err != nil {
+	if err := http.ListenAndServe(*listenAddress, nil); err != nil {
 		log.Fatalln(err)
 	}
 }

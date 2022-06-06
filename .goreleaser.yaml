@@ -4,6 +4,8 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X "main.Version=v{{ .Version }}" -X "main.GitCommit={{ .FullCommit }}"
     goos:
       - linux
       - windows
@@ -30,7 +32,7 @@ dockers:
       - --label=org.opencontainers.image.url=https://github.com/jayme-github/{{ .ProjectName }}
       - --label=org.opencontainers.image.source=https://github.com/jayme-github/{{ .ProjectName }}
       - --label=org.opencontainers.image.version=v{{ .Version }}
-      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.created={{ .Date }}
       - --label=org.opencontainers.image.revision={{ .FullCommit }}
       - --label=org.opencontainers.image.licenses=GPLv3
   - image_templates: ["jaymedh/{{ .ProjectName }}:v{{ .Version }}-arm64v8"]
@@ -46,7 +48,7 @@ dockers:
       - --label=org.opencontainers.image.url=https://github.com/jayme-github/{{ .ProjectName }}
       - --label=org.opencontainers.image.source=https://github.com/jayme-github/{{ .ProjectName }}
       - --label=org.opencontainers.image.version=v{{ .Version }}
-      - --label=org.opencontainers.image.created={{ time "2006-01-02T15:04:05Z07:00" }}
+      - --label=org.opencontainers.image.created={{ .Date }}
       - --label=org.opencontainers.image.revision={{ .FullCommit }}
       - --label=org.opencontainers.image.licenses=GPLv3
 docker_manifests:
