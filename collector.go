@@ -196,17 +196,17 @@ func (fc *fritzCollector) Collect(ch chan<- prometheus.Metric) {
 				dev.Productname,
 				dev.Name,
 			)
-			// Don't try to update goal temperature if thermostat is OFF (or in unknown state)
+			// Update goal, comfort and saving temperatures only if thermostat is ON
 			if state == 1 {
 				if err := mustStringToFloatMetric(ch, fc.ThermostatTempGoal, dev.Thermostat.FmtGoalTemperature(), &dev); err != nil {
 					log.Printf("Unable to parse goal temperature of \"%s\" : %v\n", dev.Name, err)
 				}
-			}
-			if err := mustStringToFloatMetric(ch, fc.ThermostatTempComfort, dev.Thermostat.FmtComfortTemperature(), &dev); err != nil {
-				log.Printf("Unable to parse comfort temperature of \"%s\" : %v\n", dev.Name, err)
-			}
-			if err := mustStringToFloatMetric(ch, fc.ThermostatTempSaving, dev.Thermostat.FmtSavingTemperature(), &dev); err != nil {
-				log.Printf("Unable to parse saving temperature of \"%s\" : %v\n", dev.Name, err)
+				if err := mustStringToFloatMetric(ch, fc.ThermostatTempComfort, dev.Thermostat.FmtComfortTemperature(), &dev); err != nil {
+					log.Printf("Unable to parse comfort temperature of \"%s\" : %v\n", dev.Name, err)
+				}
+				if err := mustStringToFloatMetric(ch, fc.ThermostatTempSaving, dev.Thermostat.FmtSavingTemperature(), &dev); err != nil {
+					log.Printf("Unable to parse saving temperature of \"%s\" : %v\n", dev.Name, err)
+				}
 			}
 
 			// Window Open is optional, earlier FritzOS versions don't export that

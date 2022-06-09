@@ -103,7 +103,6 @@ fritzbox_thermostat_comfort{device_id="12345 0000002",device_name="HKR_1",device
 fritzbox_thermostat_comfort{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 20
 fritzbox_thermostat_comfort{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 18.5
 fritzbox_thermostat_comfort{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 17
-fritzbox_thermostat_comfort{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 17
 # HELP fritzbox_thermostat_errorcode Thermostat error code (0 = OK), see https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/AHA-HTTP-Interface.pdf
 # TYPE fritzbox_thermostat_errorcode gauge
 fritzbox_thermostat_errorcode{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 0
@@ -123,7 +122,6 @@ fritzbox_thermostat_saving{device_id="12345 0000002",device_name="HKR_1",device_
 fritzbox_thermostat_saving{device_id="12345 0000003",device_name="HKR_2",device_type="Comet DECT"} 16
 fritzbox_thermostat_saving{device_id="12345 0000004",device_name="HKR_3",device_type="Comet DECT"} 16
 fritzbox_thermostat_saving{device_id="12345 0000005",device_name="HKR_4",device_type="Comet DECT"} 16
-fritzbox_thermostat_saving{device_id="12345 0000006",device_name="HKR_5",device_type="Comet DECT"} 16
 # HELP fritzbox_thermostat_state Thermostat state 1/0 (on/off), -1 if unknown or error
 # TYPE fritzbox_thermostat_state gauge
 fritzbox_thermostat_state{device_id="12345 0000002",device_name="HKR_1",device_type="Comet DECT"} 1

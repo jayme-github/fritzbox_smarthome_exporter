@@ -16,3 +16,4 @@
 *.swp
 vendor/*
 dist/
+fritzbox_smarthome_exporter
