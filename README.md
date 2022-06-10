@@ -1,7 +1,7 @@
 # FRITZ!Box Smarthome exporter for prometheus
 Export information about your smarthome devices (switches, powermeters, thermostat, ...) to prometheus.
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/jaymedh/fritzbox_smarthome_exporter)](https://hub.docker.com/repository/docker/jaymedh/fritzbox_smarthome_exporter)
+[![Docker Pulls](https://img.shields.io/docker/pulls/jaymedh/fritzbox_smarthome_exporter)](https://hub.docker.com/r/jaymedh/fritzbox_smarthome_exporter)
 
 # Usage
 
