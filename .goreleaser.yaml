@@ -13,6 +13,10 @@ builds:
     goarch:
       - amd64
       - arm64
+      - arm
+    goarm:
+      - 6
+      - 7
 changelog:
   sort: asc
   filters:
@@ -51,12 +55,50 @@ dockers:
       - --label=org.opencontainers.image.created={{ .Date }}
       - --label=org.opencontainers.image.revision={{ .FullCommit }}
       - --label=org.opencontainers.image.licenses=GPLv3
+  - image_templates: ["jaymedh/{{ .ProjectName }}:v{{ .Version }}-armv6"]
+    goarch: arm
+    goarm: 6
+    dockerfile: Dockerfile
+    use: buildx
+    extra_files:
+      - passwd
+    build_flag_templates:
+      - --platform=linux/arm/v6
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/jayme-github/{{ .ProjectName }}
+      - --label=org.opencontainers.image.source=https://github.com/jayme-github/{{ .ProjectName }}
+      - --label=org.opencontainers.image.version=v{{ .Version }}
+      - --label=org.opencontainers.image.created={{ .Date }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=GPLv3
+  - image_templates: ["jaymedh/{{ .ProjectName }}:v{{ .Version }}-armv7"]
+    goarch: arm
+    goarm: 7
+    dockerfile: Dockerfile
+    use: buildx
+    extra_files:
+      - passwd
+    build_flag_templates:
+      - --platform=linux/arm/v7
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/jayme-github/{{ .ProjectName }}
+      - --label=org.opencontainers.image.source=https://github.com/jayme-github/{{ .ProjectName }}
+      - --label=org.opencontainers.image.version=v{{ .Version }}
+      - --label=org.opencontainers.image.created={{ .Date }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=GPLv3
 docker_manifests:
   - name_template: jaymedh/{{ .ProjectName }}:v{{ .Version }}
     image_templates:
       - jaymedh/{{ .ProjectName }}:v{{ .Version }}-amd64
       - jaymedh/{{ .ProjectName }}:v{{ .Version }}-arm64v8
+      - jaymedh/{{ .ProjectName }}:v{{ .Version }}-armv6
+      - jaymedh/{{ .ProjectName }}:v{{ .Version }}-armv7
   - name_template: jaymedh/{{ .ProjectName }}:latest
     image_templates:
       - jaymedh/{{ .ProjectName }}:v{{ .Version }}-amd64
       - jaymedh/{{ .ProjectName }}:v{{ .Version }}-arm64v8
+      - jaymedh/{{ .ProjectName }}:v{{ .Version }}-armv6
+      - jaymedh/{{ .ProjectName }}:v{{ .Version }}-armv7
