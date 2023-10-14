@@ -115,3 +115,4 @@ docker run -d --name fritzbox_smarthome_exporter -p 9103:9103 \
 # Grafana
 
 Example Grafana dashboard can be found at https://grafana.com/dashboards/7019
+Another sample dashboard can be found here: https://grafana.com/grafana/dashboards/19759
