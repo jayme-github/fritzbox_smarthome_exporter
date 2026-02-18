@@ -1,3 +1,12 @@
+
+Project is archived and no longer maintained
+
+Due to a lack of time to work on this project and no longer using AVM/FRITZ!Box hardware, I have decided to archive this repository.
+Thanks to those who have contributed!
+
+---
+
+
 # FRITZ!Box Smarthome exporter for prometheus
 Export information about your smarthome devices (switches, powermeters, thermostat, ...) to prometheus.
 
